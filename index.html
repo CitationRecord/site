@@ -6,10 +6,14 @@
 <title>The Citation Record</title>
 <meta name="description" content="An independent quarterly benchmark of citation accuracy in legal AI systems. Published by JB Wagoner, OneZeroEight.ai. No vendor funding.">
 <link rel="canonical" href="https://citationrecord.org/">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="/favicon-180.png">
 <meta property="og:title" content="The Citation Record">
 <meta property="og:description" content="An independent quarterly benchmark of citation accuracy in legal AI systems.">
 <meta property="og:type" content="website">
 <meta property="og:url" content="https://citationrecord.org/">
+<meta property="og:image" content="https://citationrecord.org/og.png">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Spectral:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&display=swap" rel="stylesheet">
@@ -48,6 +52,27 @@
   .masthead{
     padding-bottom:2.75rem;
     border-bottom:1px solid var(--rule);
+  }
+
+  /* The mark sits beside the citation. The row mirrors the citation's own
+     font-size so the mark can centre itself on the first line at any width,
+     and hangs in the margin so the citation keeps its full measure and wraps
+     exactly as it did before the mark existed. */
+  .masthead-row{
+    display:flex;
+    align-items:flex-start;
+    gap:0.85rem;
+    font-size:clamp(2.1rem,6.2vw,3.3rem);
+    margin-left:calc(-30px - 0.85rem);
+  }
+
+  .masthead-row .cite{flex:1 1 auto;min-width:0;}
+
+  .mark{
+    flex:none;
+    width:30px;
+    height:30px;
+    margin-top:calc((1.16em - 30px) / 2);
   }
 
   .cite{
@@ -153,6 +178,11 @@
   @media (max-width:34rem){
     body{font-size:18px;}
     .sheet{padding:3.5rem 1.35rem 4rem;}
+    /* Narrow screens have no margin to hang in. Pull most of the way into
+       the sheet padding: enough that the citation still wraps to three
+       lines as it did without the mark, while keeping the mark clear of the
+       viewport edge. */
+    .masthead-row{margin-left:-0.75rem;}
     .status dl{grid-template-columns:1fr;gap:0.15rem;}
     .status dd{margin-bottom:0.85rem;}
   }
@@ -162,11 +192,19 @@
 <main class="sheet">
 
   <header class="masthead">
-    <h1 class="cite">
-      <span class="vol">The Citation Record</span>,
-      <span class="rep">Edition 2026.Q4</span>
-      <span class="yr">(forthcoming)</span>
-    </h1>
+    <div class="masthead-row">
+      <svg class="mark" viewBox="0 0 24 24" aria-hidden="true" focusable="false">
+        <rect x="3" y="4" width="18" height="1.8" fill="#000000"/>
+        <rect x="3" y="9" width="18" height="1.8" fill="#000000"/>
+        <rect x="3" y="14" width="18" height="1.8" fill="#6B1D2A"/>
+        <rect x="3" y="19" width="11" height="1.8" fill="#000000"/>
+      </svg>
+      <h1 class="cite">
+        <span class="vol">The Citation Record</span>,
+        <span class="rep">Edition 2026.Q4</span>
+        <span class="yr">(forthcoming)</span>
+      </h1>
+    </div>
     <p class="gloss">
       An independent quarterly benchmark measuring how accurately legal AI
       systems cite the law.
