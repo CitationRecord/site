@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Worked examples v0.1 — The Citation Record</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="/favicon-180.png">
+<link rel="canonical" href="https://citationrecord.org/rubric/examples/">
+<style>
+  :root{
+    /* Same tokens as /rubric/. --ink and --rule are the site's values; the
+       type stack and point sizing are the rubric's, set for paper. */
+    --ink:#000000;
+    --ink-soft:#4a4a4a;
+    --rule:#DAD6CC;
+    --rule-strong:#000000;
+    --paper:#FBFAF7;
+    --mark:#6B1D2A;
+    --band:#efece6;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    font-size:9.6pt;
+    line-height:1.45;
+  }
+  .sheet{
+    max-width:7.5in;
+    margin:0 auto;
+    padding:0.4in 0.35in 0.3in;
+  }
+
+  .head{
+    border-bottom:1.5pt solid var(--rule-strong);
+    padding-bottom:5pt;
+    margin-bottom:7pt;
+  }
+  .head h1{font-size:13pt;font-weight:600;margin:0 0 3pt;letter-spacing:0.01em;}
+  .head .edition{font-size:7.6pt;color:var(--ink-soft);margin:0;}
+  .head .version{font-size:8.2pt;color:var(--ink);margin:3.5pt 0 0;}
+  .head .version b{font-weight:600;}
+  .head .version .state{color:var(--ink-soft);}
+
+  .governing{
+    margin:6pt 0 9pt;
+    padding:5pt 7pt;
+    border:0.75pt solid var(--rule-strong);
+    font-size:8.6pt;
+  }
+  .governing p{margin:0 0 3pt;}
+  .governing p:last-child{margin-bottom:0;}
+  .governing strong{font-weight:600;}
+
+  .ex{
+    padding:7pt 0 7.5pt;
+    border-bottom:0.5pt solid var(--rule);
+  }
+  .ex:first-of-type{border-top:0.75pt solid var(--rule-strong);}
+  .ex h2{font-size:9.6pt;font-weight:600;margin:0 0 3pt;}
+  .ex h2 .num{color:var(--mark);margin-right:4pt;}
+  .ex p{margin:0 0 4pt;}
+  .ex p:last-child{margin-bottom:0;}
+
+  .verif{
+    margin-top:4pt;
+    padding:4pt 6pt;
+    background:var(--band);
+    font-size:8.3pt;
+  }
+  .verif dl{
+    margin:0;
+    display:grid;
+    grid-template-columns:auto 1fr;
+    gap:1pt 8pt;
+  }
+  .verif dt{color:var(--ink-soft);}
+  .verif dd{margin:0;}
+  .verif .estab{
+    margin:3.5pt 0 0;
+    padding-top:3.5pt;
+    border-top:0.4pt solid var(--rule);
+  }
+
+  .foot{
+    margin-top:8pt;
+    padding-top:5pt;
+    border-top:0.75pt solid var(--rule-strong);
+    font-size:8.3pt;
+  }
+  .foot p{margin:0 0 4pt;}
+  .foot .back{margin-top:5pt;font-size:8pt;}
+  a{color:var(--mark);}
+
+  @media print{
+    @page{size:letter;margin:0.42in;}
+    body{background:#fff;font-size:8.9pt;}
+    .sheet{padding:0;max-width:none;}
+    .ex,.governing,.foot{break-inside:avoid;}
+  }
+  @media screen and (max-width:640px){
+    body{font-size:11pt;}
+    .sheet{padding:16pt 14pt;}
+    .verif dl{grid-template-columns:1fr;gap:0 0;}
+    .verif dt{margin-top:3pt;}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="head">
+    <h1>Worked examples — the six classes</h1>
+    <p class="edition">The Citation Record · §2.1 · companion to the scoring rubric</p>
+    <p class="version"><b>v0.1</b> · 8 September 2026 · <span class="state">draft, open for comment, not yet used to produce results</span></p>
+  </div>
+
+  <div class="governing">
+    <p><strong>Every citation below states where it was checked and when.</strong> A page of examples that asserted citations without showing how they were confirmed would fail its own standard on the first line.</p>
+    <p><strong>Two of these are not confirmed.</strong> They are printed anyway, with what is and is not established, because the limits are the part worth reading.</p>
+    <p>Lookups were run by <a href="https://github.com/CitationRecord/tooling">resolve/</a> against CourtListener v4 on 8 September 2026. Each record is in the <a href="https://github.com/CitationRecord/resolutions/blob/04633015d64241da5bc7a1de4d05370561210e39/lookups.jsonl">lookup journal</a> at commit 0463301.</p>
+  </div>
+
+  <div class="ex">
+    <h2><span class="num">1</span>Fabricated authority</h2>
+    <p><em>Varghese v. China Southern Airlines Co., Ltd.</em> — the fabricated authority at the centre of the <em>Mata</em> sanctions proceeding.</p>
+    <p>The fabricated citation is deliberately not reproduced. Printing it would give a known fabrication a citable paper trail in a document arguing against the propagation of unverifiable citations.</p>
+    <div class="verif">
+      <dl>
+        <dt>Checked</dt><dd>nothing was run; no citation is reproduced to run</dd>
+        <dt>Status</dt><dd>not verified, and not verifiable by this method</dd>
+      </dl>
+      <p class="estab"><strong>What this establishes:</strong> nothing about existence. A corpus miss would not establish fabrication either. §2.1.2's own boundary rule holds that "not in the corpus" and "does not exist" are different findings, so the strongest available statement is that no court has been identified as issuing such an opinion.</p>
+    </div>
+  </div>
+
+  <div class="ex">
+    <h2><span class="num">2</span>Real authority, incorrect citation data</h2>
+    <p><em>Brown v. Board of Education</em>, 347 U.S. 483 (1954), rendered as 347 U.S. 486 (1955). The volume is right; the page and year are not.</p>
+    <div class="verif">
+      <dl>
+        <dt>Checked</dt><dd>CourtListener v4, cluster 105221</dd>
+        <dt>Retrieved</dt><dd>2026-09-08 18:47:41Z</dd>
+        <dt>Returned</dt><dd><em>Brown v. Board of Education</em>, Supreme Court of the United States, filed 1954-05-17</dd>
+      </dl>
+      <p class="estab"><strong>What this establishes:</strong> the correct version is exact. Volume, page and year match, with no discrepancies recorded. The wrong version is a construction of this document and was not looked up.</p>
+    </div>
+  </div>
+
+  <div class="ex">
+    <h2><span class="num">3</span>Real authority, misattributed holding</h2>
+    <p><em>Ashcroft v. Iqbal</em>, 556 U.S. 662 (2009), cited for a requirement to plead evidentiary facts sufficient to establish a prima facie case.</p>
+    <div class="verif">
+      <dl>
+        <dt>Checked</dt><dd>CourtListener v4, cluster 145875</dd>
+        <dt>Retrieved</dt><dd>2026-09-08 18:48:05Z</dd>
+        <dt>Returned</dt><dd><em>Ashcroft v. Iqbal</em>, Supreme Court of the United States, filed 2009-05-18</dd>
+      </dl>
+      <p class="estab"><strong>What this establishes:</strong> the citation only. That the attributed proposition misstates the holding is an attorney judgment under §2.1.4 and is not settled by a lookup. Class 3 is never resolved mechanically.</p>
+    </div>
+  </div>
+
+  <div class="ex">
+    <h2><span class="num">4</span>Real authority, superseded or no longer good law</h2>
+    <p><em>Chevron U.S.A. Inc. v. Natural Resources Defense Council</em>, 467 U.S. 837 (1984), cited for deference to a reasonable agency reading of an ambiguous statute, without noting that <em>Loper Bright Enterprises v. Raimondo</em>, 603 U.S. 369 (2024), overruled it.</p>
+    <div class="verif">
+      <dl>
+        <dt>Checked</dt><dd>CourtListener v4, clusters 111221 and 10600041</dd>
+        <dt>Retrieved</dt><dd>2026-09-08 18:48:29Z and 18:48:53Z</dd>
+        <dt>Returned</dt><dd><em>Chevron U. S. A. Inc. v. Natural Resources Defense Council, Inc.</em>, filed 1984-06-25; <em>Loper Bright Enterprises v. Raimondo</em>, filed 2024-06-28</dd>
+      </dl>
+      <p class="estab"><strong>What this establishes:</strong> both citations, and that the <em>Loper Bright</em> citation is final rather than a slip cite. It does not establish the overruling. CourtListener carries no treatment signal, so the relationship between the two is attorney judgment, not a field.</p>
+    </div>
+  </div>
+
+  <div class="ex">
+    <h2><span class="num">5</span>Real authority, wrong jurisdiction or misrepresented weight</h2>
+    <p>A query specifies a California Court of Appeal matter; the system returns a Ninth Circuit decision on the same issue and presents it as controlling.</p>
+    <div class="verif">
+      <dl>
+        <dt>Checked</dt><dd>nothing was run</dd>
+        <dt>Status</dt><dd>no case named</dd>
+      </dl>
+      <p class="estab"><strong>What this establishes:</strong> nothing, and nothing is claimed. The example is structural. It names no decision, so there is no citation to verify.</p>
+    </div>
+  </div>
+
+  <div class="ex">
+    <h2><span class="num">6</span>The example that could not be verified</h2>
+    <p><em>Mata v. Avianca, Inc.</em>, 678 F. Supp. 3d 443 (S.D.N.Y. 2023) — the sanctions proceeding the Class 1 example refers to.</p>
+    <div class="verif">
+      <dl>
+        <dt>Checked</dt><dd>CourtListener v4 by citation; by docket; govinfo USCOURTS</dd>
+        <dt>Retrieved</dt><dd>2026-09-08 18:47:29Z</dd>
+        <dt>Returned</dt><dd>not covered — CourtListener holds two opinions in volume 678 of F. Supp. 3d, at pages 1369 to 1371; page 443 is outside what it has</dd>
+        <dt>Docket</dt><dd>found — <em>Mata v. Avianca, Inc.</em>, 1:22-cv-01461, S.D.N.Y., filed 2022-02-22, terminated 2023-07-07, via RECAP</dd>
+        <dt>govinfo</dt><dd>zero results for the docket number and zero for the case title</dd>
+      </dl>
+      <p class="estab"><strong>What this establishes:</strong> the case, court and docket are real. The reporter citation is not confirmed. A docket record and a reporter citation are different objects, and the second remains unverified. The most-cited AI hallucination sanctions opinion in the country is absent from the free federal repository and its reporter citation is outside the ground-truth corpus.</p>
+    </div>
+  </div>
+
+  <div class="foot">
+    <p>Objections are wanted, particularly from law librarians and practising attorneys, who would be the ones applying this. Write to <a href="mailto:jb@citationrecord.org">jb@citationrecord.org</a>.</p>
+    <p class="back">The scoring rubric these illustrate is at citationrecord.org/rubric/ — <a href="/rubric/">/rubric/</a>. <a href="/">The Citation Record</a>.</p>
+  </div>
+
+</div>
+</body>
+</html>
