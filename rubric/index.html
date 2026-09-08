@@ -1,0 +1,377 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Citation scoring rubric v0.1 — The Citation Record</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="/favicon-180.png">
+<link rel="canonical" href="https://citationrecord.org/rubric/">
+<style>
+  :root{
+    /* --ink and --rule take the site's values; the type stack, the point
+       sizing and every other token stay as set for paper. */
+    --ink:#000000;
+    --ink-soft:#4a4a4a;
+    --rule:#DAD6CC;
+    --rule-strong:#000000;
+    --paper:#FBFAF7;
+    --mark:#6B1D2A;
+    --band:#efece6;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    font-size:9.2pt;
+    line-height:1.34;
+  }
+  .sheet{
+    max-width:7.5in;
+    margin:0 auto;
+    padding:0.4in 0.35in 0.3in;
+  }
+
+  /* ---- masthead ---- */
+  .head{
+    border-bottom:1.5pt solid var(--rule-strong);
+    padding-bottom:5pt;
+    margin-bottom:7pt;
+  }
+  .head h1{
+    font-size:13pt;
+    font-weight:600;
+    margin:0 0 3pt;
+    letter-spacing:0.01em;
+  }
+  .head .edition{
+    font-size:7.6pt;
+    color:var(--ink-soft);
+    margin:0;
+  }
+  .head .version{
+    font-size:8.2pt;
+    color:var(--ink);
+    margin:3.5pt 0 0;
+  }
+  .head .version b{font-weight:600;}
+  .head .version .state{color:var(--ink-soft);}
+  .governing{
+    margin:6pt 0 9pt;
+    padding:5pt 7pt;
+    border:0.75pt solid var(--rule-strong);
+    font-size:8.6pt;
+  }
+  .governing strong{font-weight:600;}
+  .governing p{margin:0 0 3pt;}
+  .governing p:last-child{margin-bottom:0;}
+
+  /* ---- bands ---- */
+  .band{margin-bottom:8pt;}
+  .band-head{
+    display:flex;
+    justify-content:space-between;
+    align-items:baseline;
+    gap:10pt;
+    background:var(--band);
+    padding:2.5pt 6pt;
+    border-top:0.75pt solid var(--rule-strong);
+    border-bottom:0.5pt solid var(--rule);
+  }
+  .band-head .name{font-weight:600;font-size:9pt;}
+  .band-head .note{font-size:7.8pt;color:var(--ink-soft);font-style:italic;}
+
+  /* ---- class rows ---- */
+  .cls{
+    display:grid;
+    grid-template-columns:18pt 1fr;
+    gap:0 7pt;
+    padding:5pt 6pt 5.5pt;
+    border-bottom:0.5pt solid var(--rule);
+  }
+  .cls:last-child{border-bottom:none;}
+  .box{
+    width:12pt;height:12pt;
+    border:0.9pt solid var(--ink);
+    margin-top:1.5pt;
+  }
+  .box.affirm{border-width:1.6pt;}
+  .cls h2{
+    font-size:9.4pt;
+    font-weight:600;
+    margin:0 0 2pt;
+  }
+  .cls h2 .num{
+    color:var(--mark);
+    font-weight:600;
+    margin-right:3pt;
+  }
+  .def{margin:0 0 3pt;}
+  .subs{
+    width:100%;
+    border-collapse:collapse;
+    margin:3pt 0;
+    font-size:8.3pt;
+  }
+  .subs td{
+    padding:1.2pt 5pt 1.2pt 0;
+    vertical-align:top;
+    border-bottom:0.4pt dotted var(--rule);
+  }
+  .subs tr:last-child td{border-bottom:none;}
+  .subs td:first-child{
+    width:20pt;
+    font-weight:600;
+    color:var(--mark);
+  }
+  .subs td:last-child{
+    width:76pt;
+    color:var(--ink-soft);
+    font-style:italic;
+  }
+  .rules{
+    margin:3pt 0 0;
+    padding-left:11pt;
+    font-size:8.3pt;
+    color:var(--ink-soft);
+  }
+  .rules li{margin-bottom:1.5pt;}
+  .rules li:last-child{margin-bottom:0;}
+  .rules b{color:var(--ink);font-weight:600;}
+
+  /* ---- class 6 ---- */
+  .six{
+    border:1.5pt solid var(--rule-strong);
+    padding:6pt 7pt;
+    margin-bottom:8pt;
+  }
+  .six .cls{border-bottom:none;padding:0;}
+  .six .why{
+    font-size:8.3pt;
+    margin:4pt 0 0;
+    padding-top:4pt;
+    border-top:0.5pt solid var(--rule);
+  }
+
+  /* ---- unscorable ---- */
+  .unsc{border-top:0.75pt solid var(--rule-strong);padding-top:5pt;}
+  .unsc h2{font-size:9.4pt;font-weight:600;margin:0 0 3pt;}
+  .unsc table{
+    width:100%;
+    border-collapse:collapse;
+    font-size:8.3pt;
+  }
+  .unsc td{
+    padding:1.5pt 6pt 1.5pt 0;
+    border-bottom:0.4pt dotted var(--rule);
+    vertical-align:top;
+  }
+  .unsc tr:last-child td{border-bottom:none;}
+  .unsc td:last-child{width:96pt;color:var(--ink-soft);}
+  .unsc .warn{
+    margin:4pt 0 0;
+    font-size:8.4pt;
+  }
+
+  .invite{
+    margin-top:8pt;
+    padding-top:6pt;
+    border-top:0.75pt solid var(--rule-strong);
+    font-size:8.4pt;
+  }
+  .invite p{margin:0;}
+  .invite .back{margin-top:4pt;font-size:8pt;}
+  .invite a{color:var(--mark);}
+
+  .foot{
+    margin-top:7pt;
+    padding-top:4pt;
+    border-top:0.5pt solid var(--rule);
+    font-size:7.6pt;
+    color:var(--ink-soft);
+    display:flex;
+    justify-content:space-between;
+    gap:12pt;
+  }
+
+  @media print{
+    @page{size:letter;margin:0.42in;}
+    body{background:#fff;font-size:8.7pt;}
+    .sheet{padding:0;max-width:none;}
+    .band,.six,.unsc,.invite{break-inside:avoid;}
+    .cls{break-inside:avoid;}
+  }
+  @media screen and (max-width:640px){
+    body{font-size:11pt;}
+    .sheet{padding:16pt 14pt;}
+    .subs td:last-child{width:auto;}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="head">
+    <h1>Citation scoring rubric — six classes</h1>
+    <p class="edition">The Citation Record · §2.1 · one sheet per citation</p>
+    <p class="version"><b>v0.1</b> · 7 September 2026 · <span class="state">draft, open for comment, not yet used to produce results</span></p>
+  </div>
+
+  <div class="governing">
+    <p><strong>Evaluate every citation against all six classes.</strong> Do not stop at the first defect. A single citation may be Class 2 and Class 3, or Class 4 and Class 5.</p>
+    <p><strong>Class 6 is scored, not inferred.</strong> It is the denominator for every rate and the population for false-positive measurement — not a leftover.</p>
+    <p><strong>Format is not truth.</strong> Disregard Bluebook compliance entirely, except where a formatting defect makes the intended authority genuinely ambiguous — then record Unscorable.</p>
+  </div>
+
+  <div class="band">
+    <div class="band-head">
+      <span class="name">Resolves mechanically</span>
+      <span class="note">checked in code against the ground-truth corpus</span>
+    </div>
+
+    <div class="cls">
+      <div class="box"></div>
+      <div>
+        <h2><span class="num">1</span>Fabricated authority</h2>
+        <p class="def">The cited authority does not exist. No opinion, statute, or regulation matching the citation can be located in the ground-truth corpus or in any official source, and the parties, court, and disposition described do not correspond to any real matter.</p>
+        <ul class="rules">
+          <li>Real case under a materially wrong caption, where the opinion is identifiable from remaining citation data → <b>Class 2</b>, not Class 1.</li>
+          <li>Fabricated quotation attributed to a real case → <b>Class 3</b>.</li>
+          <li>Real but unpublished, sealed, or withdrawn → <b>Unscorable</b>. "Not in the corpus" and "does not exist" are different findings.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cls">
+      <div class="box"></div>
+      <div>
+        <h2><span class="num">2</span>Real authority, incorrect citation data</h2>
+        <p class="def">The authority exists and is correctly identified as to substance, but one or more citation elements are wrong: reporter, volume, page, pinpoint page, year, court, or docket number.</p>
+        <table class="subs">
+          <tr><td>2a</td><td>Pinpoint page only</td><td>low — parallel authority still reachable</td></tr>
+          <tr><td>2b</td><td>First page, correct volume and reporter</td><td>moderate</td></tr>
+          <tr><td>2c</td><td>Volume or reporter</td><td>high — citation does not resolve</td></tr>
+          <tr><td>2d</td><td>Year</td><td>moderate — may misrepresent currency</td></tr>
+          <tr><td>2e</td><td>Court or jurisdiction of issuance</td><td>high — see also Class 5</td></tr>
+        </table>
+        <ul class="rules">
+          <li>Citation data wrong <b>and</b> holding misstated → score <b>both</b> 2 and 3.</li>
+          <li>A correct parallel cite in an unusual format is not an error. Parallel discrepancy is Class 2 only where the given citation does not resolve to the correct opinion.</li>
+          <li>Wrong court designation that changes whether the authority binds → <b>2e and Class 5</b>.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="band">
+    <div class="band-head">
+      <span class="name">Requires attorney judgment</span>
+      <span class="note">read the opinion; slow down here</span>
+    </div>
+
+    <div class="cls">
+      <div class="box"></div>
+      <div>
+        <h2><span class="num">3</span>Real authority, misattributed holding</h2>
+        <p class="def">The authority exists and is correctly cited, but the proposition attributed to it is not supported by the opinion.</p>
+        <table class="subs">
+          <tr><td>3a</td><td>Fabricated quotation attributed to a real opinion</td><td>separately tabulated</td></tr>
+          <tr><td>3b</td><td>Genuine quotation, materially altered</td><td></td></tr>
+          <tr><td>3c</td><td>Dissent, concurrence, or dicta presented as holding</td><td></td></tr>
+          <tr><td>3d</td><td>Holding overstated or narrowed beyond the opinion's terms</td><td></td></tr>
+          <tr><td>3e</td><td>Disposition inverted — case cited for the losing position</td><td></td></tr>
+        </table>
+        <ul class="rules">
+          <li><b>Reasonable interpretive disagreement is not Class 3.</b> Score only where two qualified attorneys reading the opinion would agree the attributed proposition is unsupported by its text. Log contested readings; do not score them.</li>
+          <li>Where the system provides passage-level linking, verify against the linked passage and record whether it supports the proposition.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cls">
+      <div class="box"></div>
+      <div>
+        <h2><span class="num">4</span>Real authority, superseded or no longer good law</h2>
+        <p class="def">The authority exists, is correctly cited, and the holding is correctly stated, but it has been overruled, abrogated, superseded by statute, vacated, or reversed, and the system presents it as current binding law without qualification.</p>
+        <table class="subs">
+          <tr><td>4a</td><td>Expressly overruled</td><td></td></tr>
+          <tr><td>4b</td><td>Abrogated in relevant part; remainder good law</td><td></td></tr>
+          <tr><td>4c</td><td>Superseded by statute or rule</td><td></td></tr>
+          <tr><td>4d</td><td>Vacated or reversed on appeal</td><td></td></tr>
+          <tr><td>4e</td><td>Called into doubt without express overruling</td><td>reported separately</td></tr>
+        </table>
+        <ul class="rules">
+          <li><b>4e</b> is scored only where a controlling later authority is directly inconsistent with the cited proposition and a competent practitioner would be obliged to address it. Excluded from the headline Class 4 figure.</li>
+          <li>Citing overruled authority <b>with accurate qualification is not an error</b>. A flag that misstates the nature of the supersession is scored 4 with a note.</li>
+          <li>Status is determined as of the measurement window close, not the scoring date. Status changed mid-window → <b>Unscorable</b>.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="cls">
+      <div class="box"></div>
+      <div>
+        <h2><span class="num">5</span>Real authority, wrong jurisdiction or misrepresented weight</h2>
+        <p class="def">The authority exists, is correctly cited, correctly stated, and currently good law, but does not bind the tribunal in which the query situated it, and is presented without accurate qualification as to weight.</p>
+        <table class="subs">
+          <tr><td>5a</td><td>Out-of-state authority presented as binding</td><td></td></tr>
+          <tr><td>5b</td><td>Federal presented as binding on a state court on a state-law question, or the converse</td><td></td></tr>
+          <tr><td>5c</td><td>Sister-circuit or sister-district authority presented as binding</td><td></td></tr>
+          <tr><td>5d</td><td>Lower-court authority presented as controlling</td><td></td></tr>
+          <tr><td>5e</td><td>Unpublished or non-citable authority presented without its citation restriction</td><td></td></tr>
+        </table>
+        <ul class="rules">
+          <li><b>Persuasive authority offered as persuasive is not an error.</b> The failure is unqualified presentation of weight, not the choice of authority.</li>
+          <li>5e is scored against the citation rules of the tribunal specified in the prompt. No tribunal specified → excluded from Class 5.</li>
+          <li>Prompt specifies a jurisdiction and the system silently answers for another → score Class 5 and log a prompt-adherence failure.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <div class="six">
+    <div class="cls">
+      <div class="box affirm"></div>
+      <div>
+        <h2><span class="num">6</span>Correct and correctly represented</h2>
+        <p class="def">The authority exists, the citation data is accurate, the attributed proposition is supported, the authority is current, and its weight in the specified jurisdiction is accurately represented or accurately qualified. <b>All five conditions.</b> Requires the absence of Classes 1 through 5.</p>
+        <p class="why">Mark this box affirmatively when all five hold. Class 6 items are the denominator for every rate in the report and the population against which over-flagging is measured — a verification system that flags a Class 6 authority as unverifiable has failed, and that failure is invisible to any methodology counting only caught errors.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="unsc">
+    <h2>Unscorable — a recorded result, not an undecided one</h2>
+    <table>
+      <tr><td>Authority outside ground-truth coverage</td><td>excluded from rates; counted</td></tr>
+      <tr><td>Authority sealed, unpublished, or withdrawn</td><td>excluded; counted</td></tr>
+      <tr><td>Citation too malformed to identify intended authority</td><td>excluded; counted; noted in system profile</td></tr>
+      <tr><td>Status changed within measurement window</td><td>excluded; counted</td></tr>
+      <tr><td>Scorer disagreement unresolved after adjudication</td><td>excluded; counted; reported</td></tr>
+    </table>
+    <p class="warn"><b>Unscorable is not a synonym for correct, and it is not a synonym for fabricated.</b> Treating coverage gaps as fabrications inflates error rates against systems drawing on broader corpora than the ground-truth source.</p>
+  </div>
+
+  <div class="invite">
+    <p>
+      This rubric is published before it has been used to score anything, so
+      that it can be argued with while changing it still costs nothing. The
+      objections wanted most are from law librarians and practising attorneys,
+      who would be the ones applying it. Write to
+      <a href="mailto:jb@citationrecord.org">jb@citationrecord.org</a>.
+    </p>
+    <p class="back"><a href="/">The Citation Record</a></p>
+  </div>
+
+  <div class="foot">
+    <span>Classes are not mutually exclusive. Reported incidences sum to more than the total error count and are not intended to sum to 100%.</span>
+    <span>Item ________ · System ________ · Scorer ________</span>
+  </div>
+
+</div>
+</body>
+</html>
