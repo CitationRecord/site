@@ -212,7 +212,14 @@
   </header>
 
   <section>
-    <h2>What this measures</h2>
+    <h2>Score an item</h2>
+    <p>
+      <a href="/rubric/scoring/">One sample item, in the interface the panel
+      uses</a>. It takes about ninety seconds. Every mechanical check on it
+      passes: the case exists, the citation is accurate to volume and page,
+      and the quoted words appear in the opinion. Scoring it is the point, so
+      it is worth doing before reading on.
+    </p>
     <p>
       Legal AI systems produce citations. Some of those citations are to cases
       that do not exist. Others are to real cases with the wrong reporter or
@@ -235,19 +242,37 @@
   <section>
     <h2>How it works</h2>
     <p>
-      Edition One measures three raw models through their APIs: Claude,
-      GPT-5, and Gemini. The same test items are put to each under a frozen
-      prompt protocol, and practising attorneys score what comes back.
+      The coverage check behind this benchmark once reported
+      <em>Mata v. Avianca</em> as not found &mdash; the most cited real case
+      in this field. It had read a sparsely ingested volume as fully indexed.
+      CourtListener holds two opinions in 678 F. Supp. 3d, at pages 1369 and
+      1371; the cited page 443 is nowhere near them. Scored, that is a real
+      case recorded as a fabrication.
+    </p>
+    <p>
+      The second failure was found by trying to reproduce a figure this
+      project had already published, and failing. A probe sampled four volumes
+      of Cal. App. 5th and three returned nothing. All three sit past volume
+      39, where CourtListener&rsquo;s holdings of that reporter stop. Those
+      zeros describe the sample, not the corpus.
+    </p>
+    <p>
+      Counted per cluster over a named bulk generation, 14,187 clusters carry
+      a Cal. Rptr. 3d citation and no Cal. App. 5th citation, against 2,614
+      carrying both. A case absent from one reporter is usually held under the
+      other. Read per reporter, the same data says something false.
+    </p>
+    <p>
+      Neither was repaired quietly. The methodology is published before the
+      results it produces, and the tooling and the verification records are
+      citable, so both failures above can be checked against the repositories
+      rather than taken on this page&rsquo;s word.
+    </p>
+    <p>
       Citation existence and accuracy resolve mechanically against
       <a href="https://www.courtlistener.com/">CourtListener</a>. Misattributed
       holdings, overruled authority, and jurisdictional weight require
       attorney judgment and receive it.
-    </p>
-    <p>
-      No subscription is required to take part, and no participant accepts a
-      vendor&rsquo;s terms of use. The research and drafting products built on
-      these models are not measured this edition; testing those waits on a
-      seated panel and on counsel.
     </p>
     <p>
       No AI system scores any item. The scoring rubric is published in full,
@@ -343,6 +368,20 @@
 
   <div class="status">
     <h2>Taking part</h2>
+    <p>
+      Edition One measures three systems: Claude, GPT-5 and Gemini, as raw
+      models through their APIs. No participant needs a subscription to
+      anything, and no participant accepts a vendor&rsquo;s terms of use. The
+      research and drafting products built on these models are not measured
+      this edition; testing those waits on a seated panel and on counsel.
+    </p>
+    <p>
+      Class 4, superseded authority, is likely to be unscoreable from this
+      corpus. CourtListener carries no treatment signal, so whether a case is
+      still good law is attorney judgment rather than a field to read. At the
+      scale an edition needs, it will probably be deferred rather than
+      reported thin.
+    </p>
     <p>
       The panel is being assembled. Attorneys who do litigation work are
       welcome to write, as are law librarians willing to review the
