@@ -1,0 +1,442 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Scoring interface, demonstration v0.1 — The Citation Record</title>
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="/favicon-180.png">
+<link rel="canonical" href="https://citationrecord.org/rubric/scoring/">
+<style>
+  :root{
+    color-scheme: light dark;
+    --ground:#F2F0EB;
+    --panel:#FFFFFF;
+    --ink:#16181A;
+    --soft:#5A5F63;
+    --faint:#8A8F93;
+    --rule:#D8D5CE;
+    --rule-firm:#B4B0A7;
+    --mark:#6B1D2A;
+    --settled:#E9E6DF;
+    --focus:#1F4E79;
+    --serif:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    --sans:ui-sans-serif,-apple-system,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif;
+  }
+  @media (prefers-color-scheme: dark){
+    :root{
+      --ground:#15171A;
+      --panel:#1D2024;
+      --ink:#E8E6E1;
+      --soft:#A8ACB0;
+      --faint:#7A8085;
+      --rule:#2F3439;
+      --rule-firm:#454B51;
+      --mark:#C97B87;
+      --settled:#24282D;
+      --focus:#7FB3E0;
+    }
+  }
+  *{box-sizing:border-box;}
+  html{background:var(--ground);min-height:100%;}
+  body{
+    margin:0;min-height:100vh;
+    background:var(--ground);color:var(--ink);
+    font-family:var(--sans);
+    font-size:16px;line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  .wrap{max-width:1080px;margin:0 auto;padding:20px 18px 56px;}
+
+  /* masthead: same version discipline as /rubric/ and /rubric/examples/ */
+  .head{
+    padding-bottom:12px;
+    border-bottom:1px solid var(--rule-firm);
+    margin-bottom:18px;
+  }
+  .head h1{font-size:20px;font-weight:600;margin:0 0 4px;letter-spacing:0.01em;}
+  .head .edition{font-size:12.5px;color:var(--soft);margin:0;}
+  .head .version{font-size:12.5px;color:var(--ink);margin:5px 0 0;}
+  .head .version b{font-weight:600;}
+  .head .version .state{color:var(--soft);}
+
+  /* what this page is: stated before the item, not after it */
+  .framing{
+    background:var(--panel);
+    border:1px solid var(--rule-firm);
+    border-left:3px solid var(--mark);
+    border-radius:5px;
+    padding:15px 19px;
+    margin-bottom:20px;
+  }
+  .framing h2{
+    font-size:12px;font-weight:600;color:var(--soft);
+    margin:0 0 10px;letter-spacing:0.02em;
+  }
+  .framing ul{margin:0;padding-left:17px;}
+  .framing li{font-size:13.5px;line-height:1.5;margin-bottom:6px;}
+  .framing li:last-child{margin-bottom:0;}
+  .framing li b{font-weight:600;}
+
+  /* header */
+  .top{
+    display:flex;justify-content:space-between;align-items:baseline;
+    gap:16px;flex-wrap:wrap;
+    padding-bottom:10px;border-bottom:1px solid var(--rule-firm);
+  }
+  .item-id{font-size:15px;font-weight:600;letter-spacing:0.01em;}
+  .item-id span{color:var(--faint);font-weight:400;}
+  .blind{font-size:12.5px;color:var(--soft);max-width:34em;}
+
+  /* evidence */
+  .evidence{
+    display:grid;grid-template-columns:minmax(0,0.85fr) minmax(0,1.15fr);
+    gap:1px;background:var(--rule);
+    border:1px solid var(--rule);border-radius:7px;
+    margin-top:18px;overflow:hidden;
+  }
+  .pane{background:var(--panel);padding:18px 20px 20px;}
+  .pane h2{
+    font-size:12px;font-weight:600;color:var(--soft);
+    margin:0 0 12px;letter-spacing:0.02em;
+  }
+  .claim{
+    font-family:var(--serif);font-size:17px;line-height:1.5;
+    margin:0 0 16px;
+  }
+  .cite-block{border-top:1px solid var(--rule);padding-top:12px;}
+  .cite-label{font-size:11.5px;color:var(--faint);margin:0 0 3px;}
+  .cite{font-family:var(--serif);font-size:15px;margin:0 0 10px;}
+  .cite:last-child{margin-bottom:0;}
+
+  .passage-frame{position:relative;}
+  .expand{
+    display:block;width:100%;
+    font-family:var(--sans);font-size:12.5px;color:var(--soft);
+    background:var(--panel);
+    border:1px solid var(--rule);border-radius:5px;
+    padding:6px 10px;cursor:pointer;text-align:left;
+  }
+  .expand:hover{border-color:var(--rule-firm);color:var(--ink);}
+  .expand:focus-visible{outline:2px solid var(--focus);outline-offset:2px;}
+  .expand[disabled]{opacity:0.35;cursor:default;}
+  #up{margin-bottom:8px;}
+  #down{margin-top:8px;}
+  .relocate{
+    background:none;border:none;padding:0;
+    font-family:var(--sans);font-size:12.5px;color:var(--mark);
+    cursor:pointer;text-decoration:underline;text-underline-offset:2px;
+  }
+  .relocate:focus-visible{outline:2px solid var(--focus);outline-offset:2px;}
+  #pin{scroll-margin-top:12px;}
+  .passage{
+    font-family:var(--serif);font-size:16px;line-height:1.62;
+    border-left:3px solid var(--mark);
+    padding-left:14px;margin:0;
+    max-height:340px;overflow-y:auto;
+  }
+  .passage p{margin:0 0 11px;}
+  .passage p:last-child{margin-bottom:0;}
+  .passage .quoted{background:var(--settled);padding:0 2px;}
+  .position{
+    font-family:var(--sans);font-size:11.5px;color:var(--mark);
+    margin:0 0 9px;font-weight:600;
+  }
+  .context{
+    font-size:12.5px;color:var(--soft);
+    margin:12px 0 0;padding-top:10px;border-top:1px solid var(--rule);
+  }
+
+  /* settled findings */
+  .settled{
+    background:var(--settled);
+    border:1px solid var(--rule);border-top:none;
+    border-radius:0 0 7px 7px;
+    margin-top:-7px;padding:13px 20px;
+    display:flex;flex-wrap:wrap;gap:8px 26px;align-items:baseline;
+  }
+  .settled .lede{font-size:12px;color:var(--soft);width:100%;margin-bottom:2px;}
+  .finding{font-size:13.5px;}
+  .finding b{font-weight:600;}
+  .finding .val{color:var(--soft);}
+
+  /* questions */
+  .asks{margin-top:26px;}
+  .asks > .lede{
+    font-size:12px;color:var(--soft);
+    padding-bottom:8px;border-bottom:1px solid var(--rule-firm);
+    margin:0 0 4px;
+  }
+  .ask{padding:18px 0;border-bottom:1px solid var(--rule);}
+  .ask:last-child{border-bottom:none;}
+  .q{font-size:17px;margin:0 0 4px;font-weight:500;}
+  .q-note{font-size:12.5px;color:var(--soft);margin:0 0 13px;}
+  .opts{display:flex;gap:9px;flex-wrap:wrap;}
+  .opt{
+    font-family:var(--sans);font-size:14.5px;
+    background:var(--panel);color:var(--ink);
+    border:1px solid var(--rule-firm);border-radius:5px;
+    padding:9px 20px;cursor:pointer;
+    flex:1 1 0;min-width:112px;
+    transition:background 120ms ease, border-color 120ms ease;
+  }
+  .opt:hover{border-color:var(--ink);}
+  .opt:focus-visible{outline:2px solid var(--focus);outline-offset:2px;}
+  .opt[aria-pressed="true"]{
+    background:var(--ink);color:var(--ground);border-color:var(--ink);
+  }
+  .note-toggle{
+    background:none;border:none;padding:0;margin-top:11px;
+    font-family:var(--sans);font-size:12.5px;color:var(--soft);
+    cursor:pointer;text-decoration:underline;text-underline-offset:2px;
+  }
+  .note-toggle:focus-visible{outline:2px solid var(--focus);outline-offset:2px;}
+  textarea{
+    display:block;width:100%;margin-top:9px;
+    font-family:var(--sans);font-size:14px;line-height:1.45;
+    background:var(--panel);color:var(--ink);
+    border:1px solid var(--rule-firm);border-radius:5px;
+    padding:9px 11px;min-height:66px;resize:vertical;
+  }
+  textarea:focus-visible{outline:2px solid var(--focus);outline-offset:1px;}
+  [hidden]{display:none !important;}
+
+  .actions{
+    margin-top:24px;padding-top:16px;
+    border-top:1px solid var(--rule-firm);
+    display:flex;gap:12px;align-items:center;flex-wrap:wrap;
+  }
+  .primary{
+    font-family:var(--sans);font-size:15px;font-weight:600;
+    background:var(--ink);color:var(--ground);
+    border:1px solid var(--ink);border-radius:5px;
+    padding:11px 26px;cursor:pointer;
+  }
+  .primary:focus-visible{outline:2px solid var(--focus);outline-offset:2px;}
+  .primary[disabled]{opacity:0.4;cursor:not-allowed;}
+  .status{font-size:13px;color:var(--soft);}
+
+  .foot{
+    margin-top:30px;padding-top:12px;
+    border-top:1px solid var(--rule);
+    font-size:12px;color:var(--faint);
+  }
+  .foot a{color:var(--mark);}
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition:none !important;}
+  }
+  @media (max-width:760px){
+    .evidence{grid-template-columns:1fr;}
+    .passage{max-height:none;}
+    .opt{flex:1 1 100%;}
+  }
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <div class="head">
+    <h1>The scoring interface</h1>
+    <p class="edition">The Citation Record · §2.1 · the rubric as a scorer meets it</p>
+    <p class="version"><b>v0.1</b> · 9 September 2026 · <span class="state">demonstration with sample data, not the scoring instrument</span></p>
+  </div>
+
+  <div class="framing">
+    <h2>What this page is</h2>
+    <ul>
+      <li><b>A demonstration built on a sample item.</b> It is not a real scored record, and nothing on it has been scored by anyone.</li>
+      <li><b>Nothing is recorded, transmitted, or stored.</b> The page sends no data anywhere. Answers stay in this browser and are gone when the tab closes.</li>
+      <li><b>The passage text is illustrative and abridged.</b> Real items draw unedited text from the corpus.</li>
+      <li><b>Scoring for real editions runs on a separate instrument,</b> where source-system blinding is enforced server-side. A static page cannot enforce a blind, and this one does not claim to.</li>
+    </ul>
+  </div>
+
+  <div class="top">
+    <div class="item-id">Item <span>b7f2-0194</span> <span>· constructed for this demonstration</span></div>
+    <div class="blind">No source system: this item is constructed for illustration. In the real instrument the source system is withheld until scoring closes, enforced server-side rather than asserted.</div>
+  </div>
+
+  <div class="evidence">
+    <div class="pane">
+      <h2>The proposition, as stated</h2>
+      <p class="claim">A complaint survives a motion to dismiss so long as it gives the defendant fair notice of the claim and the grounds on which it rests.</p>
+      <div class="cite-block">
+        <p class="cite-label">Cited to</p>
+        <p class="cite">Ashcroft v. Iqbal, 556 U.S. 662, 678 (2009)</p>
+        <p class="cite-label">Jurisdiction specified in the query</p>
+        <p class="cite">N.D. Cal.</p>
+      </div>
+    </div>
+
+    <div class="pane">
+      <h2>The cited passage</h2>
+      <p class="position">Analysis — describing a standard the Court goes on to reject</p>
+      <div class="passage-frame">
+        <button class="expand" id="up" data-dir="up">Earlier in the opinion</button>
+        <blockquote class="passage" id="passage">
+          <p class="ctx" data-lvl="3" hidden>Two working principles underlie our decision in <em>Twombly</em>. First, the tenet that a court must accept as true all of the allegations contained in a complaint is inapplicable to legal conclusions.</p>
+          <p class="ctx" data-lvl="2" hidden>Second, only a complaint that states a plausible claim for relief survives a motion to dismiss. Determining whether a complaint states a plausible claim is a context-specific task.</p>
+          <p class="ctx" data-lvl="1" hidden>We turn to the sufficiency of the pleadings before us, and to the standard governing that inquiry.</p>
+
+          <p>Under Federal Rule of Civil Procedure 8(a)(2), a pleading must contain a "short and plain statement of the claim showing that the pleader is entitled to relief."</p>
+          <p id="pin">In <em>Twombly</em>, the Court found it necessary to retire the <em>Conley</em> standard, under which a complaint needed only to give <span class="quoted">fair notice of the claim and the grounds on which it rests</span>. That formulation, the Court explained, was best forgotten.</p>
+          <p>To survive a motion to dismiss, a complaint must instead contain sufficient factual matter, accepted as true, to state a claim to relief that is plausible on its face.</p>
+
+          <p class="ctx" data-lvl="1" hidden>A claim has facial plausibility when the pleaded factual content allows the court to draw the reasonable inference that the defendant is liable for the misconduct alleged.</p>
+          <p class="ctx" data-lvl="2" hidden>The plausibility standard is not akin to a probability requirement, but it asks for more than a sheer possibility that a defendant has acted unlawfully.</p>
+          <p class="ctx" data-lvl="3" hidden>Where a complaint pleads facts that are merely consistent with a defendant's liability, it stops short of the line between possibility and plausibility of entitlement to relief.</p>
+        </blockquote>
+        <button class="expand" id="down" data-dir="down">Later in the opinion</button>
+      </div>
+      <p class="context"><span id="ctx-read">Cited paragraph and one either side.</span> Passage located at 556 U.S. 678. <button class="relocate" id="relocate" hidden>Back to the cited passage</button></p>
+    </div>
+  </div>
+
+  <div class="settled">
+    <p class="lede">Already resolved in code — findings, not questions</p>
+    <p class="finding"><b>Authority exists</b> <span class="val">yes, resolved in corpus</span></p>
+    <p class="finding"><b>Citation data</b> <span class="val">accurate, all elements</span></p>
+    <p class="finding"><b>Quoted string appears literally</b> <span class="val">yes</span></p>
+  </div>
+
+  <div class="asks">
+    <p class="lede">Three judgments. Answer each independently — a citation can fail more than one.</p>
+
+    <div class="ask">
+      <p class="q">Does the opinion support this proposition?</p>
+      <p class="q-note">A string that appears in the opinion is not automatically support. Consider whether the court adopted it or was describing something it rejected.</p>
+      <div class="opts" role="group" aria-label="Does the opinion support this proposition">
+        <button class="opt" aria-pressed="false">Supported</button>
+        <button class="opt" aria-pressed="false">Not supported</button>
+        <button class="opt" aria-pressed="false">Can't tell</button>
+      </div>
+      <button class="note-toggle" data-note="n1">Add a note</button>
+      <textarea id="n1" hidden placeholder="Optional. Anything a second scorer should know."></textarea>
+    </div>
+
+    <div class="ask">
+      <p class="q">Is this authority still good law for that proposition?</p>
+      <p class="q-note">Status as of the measurement window close, not today.</p>
+      <div class="opts" role="group" aria-label="Is this authority still good law">
+        <button class="opt" aria-pressed="false">Still good</button>
+        <button class="opt" aria-pressed="false">Superseded</button>
+        <button class="opt" aria-pressed="false">Can't tell</button>
+      </div>
+      <button class="note-toggle" data-note="n2">Add a note</button>
+      <textarea id="n2" hidden placeholder="Optional."></textarea>
+    </div>
+
+    <div class="ask">
+      <p class="q">Does it bind a court in N.D. Cal.?</p>
+      <p class="q-note">Persuasive authority offered as persuasive is not an error. The question is whether weight was represented accurately.</p>
+      <div class="opts" role="group" aria-label="Does it bind a court in the specified jurisdiction">
+        <button class="opt" aria-pressed="false">Binds</button>
+        <button class="opt" aria-pressed="false">Doesn't bind</button>
+        <button class="opt" aria-pressed="false">Can't tell</button>
+      </div>
+      <button class="note-toggle" data-note="n3">Add a note</button>
+      <textarea id="n3" hidden placeholder="Optional."></textarea>
+    </div>
+  </div>
+
+  <div class="actions">
+    <button class="primary" id="record" disabled>Complete the item</button>
+    <span class="status" id="status">Three answers needed</span>
+  </div>
+
+  <p class="foot">Scoring against rubric v0.1. Classes are assigned from these answers after scoring closes, never shown during it. <a href="/rubric/">Full rubric</a> · <a href="/rubric/examples/">Worked examples</a> · <a href="/">The Citation Record</a></p>
+
+</div>
+
+<script>
+  var depth = {up:0, down:0};
+  var MAXLVL = 3;
+
+  function applyDepth(){
+    document.querySelectorAll('.ctx').forEach(function(p){
+      var lvl = +p.dataset.lvl;
+      var before = p.compareDocumentPosition(document.getElementById('pin'))
+                   & Node.DOCUMENT_POSITION_FOLLOWING;
+      var dir = before ? 'up' : 'down';
+      p.hidden = lvl > depth[dir];
+    });
+    document.getElementById('up').disabled = depth.up >= MAXLVL;
+    document.getElementById('down').disabled = depth.down >= MAXLVL;
+    document.getElementById('up').textContent =
+      depth.up >= MAXLVL ? 'No further context available' : 'Earlier in the opinion';
+    document.getElementById('down').textContent =
+      depth.down >= MAXLVL ? 'No further context available' : 'Later in the opinion';
+
+    var total = depth.up + depth.down;
+    document.getElementById('ctx-read').textContent =
+      total === 0
+        ? 'Cited paragraph and one either side.'
+        : 'Context expanded: ' + depth.up + ' earlier, ' + depth.down + ' later. Recorded with your answer.';
+    document.getElementById('relocate').hidden = total === 0;
+  }
+
+  document.querySelectorAll('.expand').forEach(function(b){
+    b.addEventListener('click', function(){
+      var d = b.dataset.dir;
+      if(depth[d] < MAXLVL) depth[d]++;
+      applyDepth();
+    });
+  });
+
+  document.getElementById('relocate').addEventListener('click', function(){
+    document.getElementById('pin').scrollIntoView({block:'center', behavior:'smooth'});
+  });
+
+  applyDepth();
+
+  document.querySelectorAll('.opts').forEach(function(group){
+    group.addEventListener('click', function(e){
+      var btn = e.target.closest('.opt');
+      if(!btn) return;
+      var was = btn.getAttribute('aria-pressed') === 'true';
+      group.querySelectorAll('.opt').forEach(function(b){
+        b.setAttribute('aria-pressed','false');
+      });
+      btn.setAttribute('aria-pressed', was ? 'false' : 'true');
+      refresh();
+    });
+  });
+
+  document.querySelectorAll('.note-toggle').forEach(function(t){
+    t.addEventListener('click', function(){
+      var ta = document.getElementById(t.dataset.note);
+      var open = !ta.hidden;
+      ta.hidden = open;
+      t.textContent = open ? 'Add a note' : 'Hide note';
+      if(!open) ta.focus();
+    });
+  });
+
+  function refresh(){
+    var groups = document.querySelectorAll('.opts');
+    var done = 0;
+    groups.forEach(function(g){
+      if(g.querySelector('.opt[aria-pressed="true"]')) done++;
+    });
+    var left = groups.length - done;
+    var btn = document.getElementById('record');
+    var status = document.getElementById('status');
+    btn.disabled = left > 0;
+    status.textContent = left === 0
+      ? 'Ready to complete'
+      : left + (left === 1 ? ' answer needed' : ' answers needed');
+  }
+
+  // The demo has nowhere to put an answer, and says so rather than implying
+  // a record was written. Changing an answer afterwards re-arms the button
+  // through refresh(), which restores the ordinary status line.
+  document.getElementById('record').addEventListener('click', function(){
+    this.disabled = true;
+    document.getElementById('status').textContent =
+      'Three answers given. Nothing was stored or sent; this demonstration has nowhere to put them.';
+  });
+</script>
+</body>
+</html>
