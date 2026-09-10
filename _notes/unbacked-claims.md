@@ -2,7 +2,7 @@
 
 A running list of statements on citationrecord.org that assert a fact no
 artifact produces, or commit to a procedure no component performs. Not defects
-in an instrument, which belong in [Known Weaknesses](known-weaknesses.md), and
+in an instrument, which belong in [Known Weaknesses](https://citationrecord.org/weaknesses/), and
 not statements that are wrong. These may all be true, or may yet become true.
 The objection is narrower: nothing on the page or in any repository lets a
 reader check them, and this project's whole argument is that an unbackable
@@ -79,15 +79,24 @@ editing the page it came from, which is the reason the archiver exists.
 
 ---
 
-## A prompt protocol and hashed items in components that do not exist
+## A prompt protocol and a hashed query set in components that do not exist
 
 `unbuilt-components` · opened 10 September 2026 · open · **must close before
 Edition One is queried, not before it publishes**
 
-**Where.** "How it works", in two clauses added the same day this entry was
-opened: *the methodology and prompt protocol are published before any results
-are*, and *the test items are pre-registered rather than published: fixed and
-hashed before testing, disclosed once the edition ships*.
+**Where.** "How it works", in two clauses: *the methodology and prompt
+protocol are published before any results are*, and *the query set is
+pre-registered rather than published: the queries and their expected answers
+are fixed and hashed before any model is called, and that hash is written to
+an append-only record before the first query*.
+
+The second clause originally said the **test items** were fixed and hashed
+before testing. That was impossible. An item is a proposition-and-citation
+pair extracted from a model's response, so no item exists until after the
+models have been queried. Only the queries and their recorded ground truth
+exist beforehand, and only those can be hashed. Corrected on the page the day
+after it went live; recorded here because the entry has to describe the
+commitment that now stands.
 
 **What performs them.** Nothing. The tooling README lists nine components. Five
 exist.
@@ -100,7 +109,7 @@ exist.
 | `parallel/` | per-cluster and per-volume counts | built |
 | `resolve/` | citation resolution | built |
 | `runner/` | **the frozen prompt protocol** | not written |
-| `sample/` | **fixing and hashing the item set** | not written |
+| `sample/` | **fixing and hashing the query set** | not written |
 | `score/` | scoring interface | not written |
 | `build/` | edition assembly | not written |
 
@@ -114,7 +123,7 @@ window in which that has to happen.
 
 **The deadline, which is the point of this entry.** Hashing has to occur
 before any system is queried. A hash computed afterwards demonstrates nothing:
-it is consistent with an item set assembled to suit the results, and no reader
+it is consistent with a query set assembled to suit the results, and no reader
 can tell the two apart from outside. Pre-registration claimed after the fact
 is worthless, and worse than making no claim, because it asserts a control
 that was never applied.
@@ -124,10 +133,11 @@ query of Edition One, or the sentence on the page becomes unfixable rather
 than merely unbacked. The ordering is the control; the hash is only its
 record.
 
-**What would settle it.** `sample/` built far enough to fix the item set and
-hash it, with the hash written somewhere append-only before any model is
-called. The lookup journal in `CitationRecord/resolutions` is the precedent
-and probably the venue: timestamped, provenance-stamped, and reachable. Then
+**What would settle it.** `sample/` built far enough to fix the query set and
+its recorded ground truth and hash both, with the hash written somewhere
+append-only before any model is called. The lookup journal in
+`CitationRecord/resolutions` is the precedent and probably the venue:
+timestamped, provenance-stamped, and reachable. Then
 `runner/` far enough to freeze and version the protocol, since the provenance
 requirement already names a prompt protocol version as a field a result
 cannot be a result without.
@@ -144,17 +154,20 @@ improvement only if the promise is kept.
 
 The page carries several present-tense descriptions of a benchmark that has not
 run: that it scores all six classes and publishes the false-positive rate
-alongside the catch rate, that test items are held out and rotated, that each
-edition carries a permanent identifier, and that vendors receive results
-twenty-one days before publication. A forthcoming edition has to describe
-itself somehow, and these are commitments rather than measurements.
+alongside the catch rate, that each edition carries a permanent identifier, and
+that vendors receive results twenty-one days before publication. A forthcoming
+edition has to describe itself somehow, and these are commitments rather than
+measurements.
 
 They are a real question, but a different one: whether the page should mark the
-line between what it does and what it intends to do. That belongs in the
-restructure, not here.
+line between what it does and what it intends to do. The restructure did not
+settle it and it is still open.
 
-One statement is neither on this list nor a commitment. "How it works" says the
-methodology, prompt set, and scoring rubric are published in full. The rubric
-is published. The other two do not exist as documents in any repository. That
-is not an unbacked claim, it is a false one, and it needs correcting rather
-than recording.
+## Closed
+
+**The methodology, prompt set, and scoring rubric are published in full.**
+Opened and closed 10 September 2026, and never on this list, because it was
+false rather than unbacked: the rubric was published and the other two did not
+exist as documents anywhere. The sentence was split into three commitments,
+"in full" now applies only to the rubric, and the methodology became an
+ordering commitment rather than a completion claim.

@@ -279,11 +279,15 @@
     <p>
       No AI system scores any item. The scoring rubric is published in full,
       and the methodology and prompt protocol are published before any results
-      are. The test items are pre-registered rather than published: fixed and
-      hashed before testing, disclosed once the edition ships, and rotated for
-      the next. Publishing them in advance would make contamination of later
-      editions certain rather than possible. Each edition is free, carries a
-      permanent identifier, and states the measurement window it describes.
+      are. The query set is pre-registered rather than published: the queries
+      and their expected answers are fixed and hashed before any model is
+      called, and that hash is written to an append-only record before the
+      first query. Queries are disclosed once the edition ships and rotated
+      for the next. Publishing them in advance would make contamination of
+      later editions certain rather than possible. Test items are derived from
+      what the models return, so they are published with the edition rather
+      than before it. Each edition is free, carries a permanent identifier,
+      and states the measurement window it describes.
     </p>
   </section>
 
