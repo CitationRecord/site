@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Known Weaknesses v0.1 — The Citation Record</title>
+<meta name="description" content="Defects found in the Citation Record's own instruments, each under its own name, with the records behind them.">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="icon" href="/favicon-32.png" sizes="32x32">
+<link rel="apple-touch-icon" href="/favicon-180.png">
+<link rel="canonical" href="https://citationrecord.org/weaknesses/">
+<style>
+  :root{
+    /* The rubric's tokens and type stack. No network font: a document meant
+       to be cited should not depend on a fetch to typeset correctly. */
+    --ink:#000000;
+    --ink-soft:#4a4a4a;
+    --rule:#DAD6CC;
+    --rule-strong:#000000;
+    --paper:#FBFAF7;
+    --mark:#6B1D2A;
+    --band:#efece6;
+  }
+  *{box-sizing:border-box;}
+  html{-webkit-text-size-adjust:100%;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:"Iowan Old Style","Palatino Linotype",Palatino,"Book Antiqua",Georgia,serif;
+    font-size:10.4pt;
+    line-height:1.5;
+  }
+  .sheet{
+    max-width:6.9in;
+    margin:0 auto;
+    padding:0.5in 0.4in 0.4in;
+  }
+
+  /* ---- masthead ---- */
+  .head{
+    border-bottom:1.5pt solid var(--rule-strong);
+    padding-bottom:6pt;
+    margin-bottom:10pt;
+  }
+  .head h1{font-size:15pt;font-weight:600;margin:0 0 4pt;letter-spacing:0.01em;}
+  .head .edition{font-size:8.6pt;color:var(--ink-soft);margin:0;}
+  .head .version{font-size:9pt;color:var(--ink);margin:4pt 0 0;}
+  .head .version b{font-weight:600;}
+  .head .version .state{color:var(--ink-soft);}
+
+  /* ---- what the register is ---- */
+  .governing{
+    background:var(--band);
+    padding:9pt 11pt;
+    margin-bottom:12pt;
+  }
+  .governing p{margin:0 0 5pt;font-size:9.6pt;}
+  .governing p:last-child{margin-bottom:0;}
+
+  /* ---- entries ---- */
+  .entry{
+    padding-top:12pt;
+    margin-top:12pt;
+    border-top:0.75pt solid var(--rule-strong);
+  }
+  .entry h2{
+    font-size:12pt;
+    font-weight:600;
+    margin:0 0 3pt;
+    line-height:1.25;
+  }
+  .entry h2 a{color:inherit;text-decoration:none;}
+  .entry h2 a:hover{color:var(--mark);}
+  .meta{
+    font-size:8.6pt;
+    color:var(--ink-soft);
+    margin:0 0 8pt;
+    font-variant-numeric:tabular-nums;
+  }
+  .meta .slug{font-family:ui-monospace,"Cascadia Mono",Consolas,monospace;font-size:8pt;}
+  .meta .open{color:var(--mark);font-weight:600;}
+  .meta .fixed{color:var(--ink);font-weight:600;}
+  .entry p{margin:0 0 7pt;}
+  .entry p:last-child{margin-bottom:0;}
+  .entry b.lead{font-weight:600;}
+  .deadline{
+    border-left:2.5pt solid var(--mark);
+    padding-left:8pt;
+    margin:8pt 0;
+  }
+
+  table{
+    border-collapse:collapse;
+    width:100%;
+    margin:8pt 0;
+    font-size:9.4pt;
+  }
+  th,td{
+    text-align:left;
+    padding:3.5pt 8pt 3.5pt 0;
+    border-bottom:0.5pt solid var(--rule);
+    vertical-align:top;
+  }
+  th{font-weight:600;border-bottom:0.75pt solid var(--rule-strong);}
+  td.num{font-variant-numeric:tabular-nums;}
+
+  code{
+    font-family:ui-monospace,"Cascadia Mono",Consolas,monospace;
+    font-size:9pt;
+  }
+  a{color:var(--mark);text-underline-offset:0.15em;}
+
+  /* ---- closing ---- */
+  .closing{
+    margin-top:14pt;
+    padding-top:10pt;
+    border-top:1.5pt solid var(--rule-strong);
+  }
+  .closing h2{font-size:12pt;font-weight:600;margin:0 0 6pt;}
+
+  .foot{
+    margin-top:12pt;
+    padding-top:6pt;
+    border-top:0.5pt solid var(--rule);
+    font-size:8.6pt;
+    color:var(--ink-soft);
+  }
+  .foot p{margin:0 0 3pt;}
+
+  @media print{
+    @page{size:letter;margin:0.5in;}
+    body{background:#fff;font-size:9.6pt;}
+    .sheet{padding:0;max-width:none;}
+    .entry,.governing,.closing{break-inside:avoid;}
+    table{break-inside:avoid;}
+  }
+  @media screen and (max-width:640px){
+    body{font-size:12pt;}
+    .sheet{padding:18pt 15pt;}
+    table{font-size:10.5pt;}
+  }
+</style>
+</head>
+<body>
+<div class="sheet">
+
+  <div class="head">
+    <h1>Known Weaknesses</h1>
+    <p class="edition">The Citation Record · defects in this project&rsquo;s own instruments</p>
+    <p class="version"><b>v0.1</b> · 10 September 2026 · <span class="state">four entries, two fixed and two open</span></p>
+  </div>
+
+  <div class="governing">
+    <p><strong>This register holds defects found in the instruments this benchmark runs on, not in the systems it measures.</strong> Each is stated under its own name, with the records behind it, before anyone else has to find it.</p>
+    <p><strong>Fixed entries stay.</strong> A register that dropped a defect once it was repaired would be a changelog, and would leave a reader unable to tell an instrument that has never failed from one whose failures were tidied away.</p>
+    <p><strong>An entry stays open until the defect is fixed or accepted.</strong> A defect that is accepted rather than fixed says so, and says why.</p>
+  </div>
+
+  <div class="entry" id="sparse-volume-read-as-full">
+    <h2><a href="#sparse-volume-read-as-full">A sparse volume read as full coverage</a></h2>
+    <p class="meta"><span class="slug">sparse-volume-read-as-full</span> · found 3 September 2026 · <span class="fixed">fixed</span></p>
+
+    <p><b class="lead">The defect.</b> The coverage check treated any volume CourtListener held at all as fully indexed. A citation to a page the corpus had never ingested therefore resolved as <em>not found</em> rather than <em>not covered</em>. Scored, that is a false positive for fabrication recorded against a real case.</p>
+
+    <p><b class="lead">Evidence.</b> It reported <em>Mata v. Avianca</em>, 678 F. Supp. 3d 443, as not found. That is the most cited real case in this field, and the reason the field exists. CourtListener holds exactly two opinions in volume 678 of F. Supp. 3d, at pages 1369 and 1371, both United States Court of International Trade decisions from 2024. Page 443 is nowhere near the ingested region.</p>
+
+    <table>
+      <tr><th>Lookup</th><th>Retrieved</th><th>Outcome</th></tr>
+      <tr><td>678 F. Supp. 3d 443</td><td class="num">2026-09-08T05:11:46Z</td><td><code>not_covered</code>, <code>volume_only_partially_held</code></td></tr>
+      <tr><td>678 F. Supp. 3d 443</td><td class="num">2026-09-08T18:47:29Z</td><td><code>not_covered</code>, <code>volume_only_partially_held</code></td></tr>
+      <tr><td>678 F. Supp. 3d 1369</td><td class="num">2026-09-10T03:14:33Z</td><td>cluster 9467618, court <code>cit</code></td></tr>
+      <tr><td>678 F. Supp. 3d 1371</td><td class="num">2026-09-10T03:15:08Z</td><td>cluster 9468905, court <code>cit</code></td></tr>
+    </table>
+
+    <p>Records in <a href="https://github.com/CitationRecord/resolutions">CitationRecord/resolutions</a> at <code>20f3823</code>. Both surviving lookups of page 443 already show the corrected verdict, so the misclassification predates the journal and is attested by the commit that repaired it rather than by a record of it happening. The court was established later and from the API, not from the original probe.</p>
+
+    <p><b class="lead">What fixed it.</b> <a href="https://github.com/CitationRecord/tooling">CitationRecord/tooling</a> at <code>9276206</code>, which states it as rejecting a sparse volume as evidence of absence. The resolver now probes what the volume actually holds and returns <code>not_covered</code> with the coverage counts attached.</p>
+
+    <p><b class="lead">Residual, accepted.</b> The resolver still cannot separate a page CourtListener never ingested from a page that was invented. Nothing available from CourtListener can. Such a citation goes to the unscorable bucket with its coverage counts, and an attorney decides. That is the direction the methodology requires: a coverage gap scored as a fabrication is worse than a fabrication left unscored, because it inflates error rates against systems drawing on broader corpora than the ground-truth source.</p>
+  </div>
+
+  <div class="entry" id="reporter-prefix-match">
+    <h2><a href="#reporter-prefix-match">A phrase query matched reporters by prefix</a></h2>
+    <p class="meta"><span class="slug">reporter-prefix-match</span> · found 3 September 2026 · <span class="fixed">fixed</span></p>
+
+    <p><b class="lead">The defect.</b> Coverage counts came from a phrase query against citation text. A phrase query is a prefix match, so <code>citation:("347 U.S.")</code> also matched <code>347 U.S. App. D.C.</code> Every reporter whose name prefixes another was counted as denser than it is.</p>
+
+    <p><b class="lead">Evidence.</b> Volume 347 of U.S. returned 734 under the phrase query against 691 under the structured filter, the difference being the 43 opinions in volume 347 of U.S. App. D.C.</p>
+
+    <p><b class="lead">What it caused.</b> No published figure, but the same false-positive direction as the entry above. That count is what decides <em>not found</em> against <em>not covered</em>. An inflated count makes a volume look well held, which pushes a citation the corpus does not carry toward being read as fabricated rather than as uncovered. Two independent defects tilting the instrument the same way is the part worth remembering.</p>
+
+    <p><b class="lead">What fixed it.</b> The same commit, <code>9276206</code>. Counts now come from the structured citation filter keyed on the reporter field, which matches exactly, and both the resolver and the census use that filter so the two components measure the same thing the same way. Kept honest by two named tests, <code>test_reporter_prefix_does_not_inflate_a_volume</code> and <code>test_a_prefix_reporter_stays_distinct</code>.</p>
+
+    <p><b class="lead">Residual.</b> None known for this query. The general form has no test and no fix: a query whose semantics differ from what the caller assumes returns a plausible number rather than an error, and only a second method disagreeing will reveal it.</p>
+  </div>
+
+  <div class="entry" id="zeros-without-cause">
+    <h2><a href="#zeros-without-cause">Zeros are recorded without their cause</a></h2>
+    <p class="meta"><span class="slug">zeros-without-cause</span> · found 9 September 2026 · <span class="open">open</span></p>
+
+    <p><b class="lead">The defect.</b> A sampled volume returning no opinions may be a gap inside the range the corpus holds, or a volume past the end of what the corpus holds at all. The probe records the same zero for both. Every rate computed from those zeros mixes two quantities that mean opposite things, and nothing in the output lets a reader separate them.</p>
+
+    <p><b class="lead">Evidence.</b> Two reporters from the same four-volume probe, generation 2026-06-30, in <a href="https://github.com/CitationRecord/tooling">CitationRecord/tooling</a> at <code>8e8e576</code> under <code>results/</code>.</p>
+
+    <table>
+      <tr><th>Reporter</th><th>Draw zeros</th><th>Past the extent</th><th>Inside the extent</th></tr>
+      <tr><td>Cal. App. 5th</td><td class="num">3 of 4</td><td class="num">3</td><td class="num">0</td></tr>
+      <tr><td>F. Supp. 3d</td><td class="num">2 of 4</td><td class="num">0</td><td class="num">2</td></tr>
+    </table>
+
+    <p>Cal. App. 5th returns three zeros because the frame drew volumes 50, 75 and 92 while the corpus stops at volume 39. Those zeros say nothing whatever about how well volumes 1 to 39 are held. F. Supp. 3d returns two zeros from inside its held range, where 218 of 700 declared volumes carry no citation. The first is an artifact of the draw. The second is the sparse district court coverage this probe was built to find, and it stands.</p>
+
+    <p><b class="lead">What it caused.</b> The Cal. App. 5th rate, three of four, was repeated as a coverage figure in a published article and in correspondence with Free Law Project. It is not a coverage figure. The same reporter counted per cluster against its parallel reporter, and counted across its whole declared range, gives two further numbers. Three quantities, three populations, and the one that travelled furthest was the one least connected to coverage.</p>
+
+    <p><b class="lead">What would fix it.</b> Not trimming the draw to the held range. That would hide precisely what the declared range exists to expose, and would turn a reporter the corpus barely holds into one that looks complete. The fix is to record the corpus extent per reporter, classify each zero as interior or beyond-extent, and report the two rates separately, so neither can be quoted as the other.</p>
+
+    <p>Not applied. It is a change to what the probe records, and the probe is to be re-run once after both open entries are fixed rather than twice.</p>
+
+    <p><b class="lead">What it does not affect.</b> The per-cluster parallel-citation counts, which never use a volume sample. Those are exact over a complete generation and are recorded separately.</p>
+  </div>
+
+  <div class="entry" id="declared-range-drift">
+    <h2><a href="#declared-range-drift">Declared volume ranges drift from the corpus, and nothing reports it</a></h2>
+    <p class="meta"><span class="slug">declared-range-drift</span> · found 9 September 2026 · <span class="open">open</span></p>
+
+    <p><b class="lead">The defect.</b> Each reporter&rsquo;s volume range is a declared parameter rather than a fact read from CourtListener. That is deliberate and correct: asking the corpus where its volumes stop, and then sampling only that far, would make every reporter look complete. But nothing compares the declared range against what the corpus actually holds, so a parameter that is badly wrong is indistinguishable in the output from one that is well chosen.</p>
+
+    <p><b class="lead">Evidence.</b> Same generation and commit as the entry above.</p>
+
+    <table>
+      <tr><th>Reporter</th><th>Declared last</th><th>Last held</th><th>Drift</th></tr>
+      <tr><td>U.S.</td><td class="num">603</td><td class="num">606</td><td>corpus runs past the declaration</td></tr>
+      <tr><td>F.3d</td><td class="num">1000</td><td class="num">999</td><td>close</td></tr>
+      <tr><td>F. Supp. 3d</td><td class="num">700</td><td class="num">778</td><td>corpus runs past the declaration</td></tr>
+      <tr><td>Cal. App. 5th</td><td class="num">100</td><td class="num">39</td><td>declaration runs 61 volumes past the corpus</td></tr>
+    </table>
+
+    <p>The drift goes both ways. Two reporters are held beyond their declared last volume, which means the frame samples a narrower span than the corpus offers. Cal. App. 5th overshoots by 61 volumes, which is what put three of its four draws past the end.</p>
+
+    <p><b class="lead">Why it is separate from the entry above.</b> They have different fixes. The first is about what a zero means once it has been recorded. This one is about a parameter being wrong before any volume is drawn. A probe could classify its zeros correctly and still be sampling the wrong span, and correcting a range would not tell anyone what an existing zero meant. Folding them together would repeat the error both entries exist to record.</p>
+
+    <p><b class="lead">What would fix it.</b> Report declared last volume against last volume held for every reporter, in the probe&rsquo;s own output, and treat a large divergence as something to explain rather than something to absorb. The declared range stays declared. It just stops being unfalsifiable.</p>
+
+    <p>Not applied, for the same reason as the entry above.</p>
+
+    <p><b class="lead">What it does not affect.</b> Anything that reads the citations table directly rather than through the frame.</p>
+  </div>
+
+  <div class="closing">
+    <h2>What these four have in common</h2>
+
+    <p>The two open entries were found by trying to reproduce a number this project had been repeating for days, and failing.</p>
+
+    <p>The probe that produced it wrote no artifact. Its output directory was never created and nothing was committed, so its figures could not be read back from any file. They were not lost: the first run&rsquo;s per-volume counts survive in prose, in the commit message that added the probe, <code>17e063c</code>. Recomputing them from the bulk citations table reproduces them exactly. So the figures were checkable, and the first claim made about them here &mdash; that nothing had been recorded &mdash; was itself wrong and had to be corrected in the artifacts that carried it.</p>
+
+    <p>The defect was never that nothing was written down. It was that what was written down carried no schema, no provenance stamp, no population and no caveats, so a number could leave it without the thing it was measured over. That is how a sample rate over four volumes became a claim about corpus coverage.</p>
+
+    <p><strong>Three of the four entries here bias the same way, toward reading an absence or a gap as a failure by something under test.</strong> A sparse volume read as full coverage turns a real case into a fabrication. An inflated reporter count pushes an uncovered citation toward the same verdict. A sampling artifact read as a coverage gap overstates how little ground truth exists. That is the direction this benchmark can least afford to be wrong in, because every error in it makes the systems under test look worse than they are and makes this project look more necessary than it is. It is worth watching for in the fifth entry.</p>
+  </div>
+
+  <div class="foot">
+    <p>This register is versioned and dated. Entries are added as defects are found and are not removed once fixed.</p>
+    <p><a href="/">The Citation Record</a> · <a href="/rubric/">Scoring rubric</a> · <a href="/rubric/examples/">Worked examples</a> · <a href="/rubric/scoring/">The scoring interface</a></p>
+  </div>
+
+</div>
+</body>
+</html>
