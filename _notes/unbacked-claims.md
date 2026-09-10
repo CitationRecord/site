@@ -1,19 +1,21 @@
 # Claims on the page with nothing producing them
 
 A running list of statements on citationrecord.org that assert a fact no
-artifact produces. Not defects in an instrument, which belong in
-[Known Weaknesses](known-weaknesses.md), and not statements that are wrong.
-These may all be true. The objection is narrower: nothing on the page or in
-any repository lets a reader check them, and this project's whole argument is
-that an unbackable number should not travel.
+artifact produces, or commit to a procedure no component performs. Not defects
+in an instrument, which belong in [Known Weaknesses](known-weaknesses.md), and
+not statements that are wrong. These may all be true, or may yet become true.
+The objection is narrower: nothing on the page or in any repository lets a
+reader check them, and this project's whole argument is that an unbackable
+claim should not travel.
 
-An entry leaves this list when something produces the figure, or when the
-wording stops asserting more than the evidence carries. Deleting the claim
-counts too, and is sometimes the right answer.
+An entry leaves this list when something produces the figure, when the
+component exists and has run, or when the wording stops asserting more than
+the evidence carries. Deleting the claim counts too, and is sometimes the
+right answer.
 
 Not yet published, like the rest of `_notes/`.
 
-Two entries.
+Three entries. The third has a deadline the other two do not.
 
 ---
 
@@ -74,6 +76,67 @@ the set, and either citing the archive from the page or narrowing the sentence
 to what the evidence carries. A sentence naming how many claims were surveyed
 and over what window would be stronger than *every*, and would survive a vendor
 editing the page it came from, which is the reason the archiver exists.
+
+---
+
+## A prompt protocol and hashed items in components that do not exist
+
+`unbuilt-components` · opened 10 September 2026 · open · **must close before
+Edition One is queried, not before it publishes**
+
+**Where.** "How it works", in two clauses added the same day this entry was
+opened: *the methodology and prompt protocol are published before any results
+are*, and *the test items are pre-registered rather than published: fixed and
+hashed before testing, disclosed once the edition ships*.
+
+**What performs them.** Nothing. The tooling README lists nine components. Five
+exist.
+
+| Component | Role | Status |
+| --- | --- | --- |
+| `archive/` | vendor claim snapshots | built |
+| `bulk/` | bulk data loader | built |
+| `census/` | reporter coverage | built |
+| `parallel/` | per-cluster and per-volume counts | built |
+| `resolve/` | citation resolution | built |
+| `runner/` | **the frozen prompt protocol** | not written |
+| `sample/` | **fixing and hashing the item set** | not written |
+| `score/` | scoring interface | not written |
+| `build/` | edition assembly | not written |
+
+The two components the new copy depends on are both in the unwritten half.
+
+**Why it is not the same as the other two entries.** Those are claims about
+the past with no record behind them. This is a commitment about the future
+with no mechanism behind it. All three fail the same test, in that nothing
+produces them, but this one can still be made true, and there is a specific
+window in which that has to happen.
+
+**The deadline, which is the point of this entry.** Hashing has to occur
+before any system is queried. A hash computed afterwards demonstrates nothing:
+it is consistent with an item set assembled to suit the results, and no reader
+can tell the two apart from outside. Pre-registration claimed after the fact
+is worthless, and worse than making no claim, because it asserts a control
+that was never applied.
+
+So this entry does not wait on publication. It has to close before the first
+query of Edition One, or the sentence on the page becomes unfixable rather
+than merely unbacked. The ordering is the control; the hash is only its
+record.
+
+**What would settle it.** `sample/` built far enough to fix the item set and
+hash it, with the hash written somewhere append-only before any model is
+called. The lookup journal in `CitationRecord/resolutions` is the precedent
+and probably the venue: timestamped, provenance-stamped, and reachable. Then
+`runner/` far enough to freeze and version the protocol, since the provenance
+requirement already names a prompt protocol version as a field a result
+cannot be a result without.
+
+**A note on how this got here.** The commitment was written to correct a worse
+sentence, which bundled the protocol and the items together and, read one way,
+promised to publish the queries. The correction is right. It also moved the
+page from an unbacked description to an unbacked promise, which is an
+improvement only if the promise is kept.
 
 ---
 
