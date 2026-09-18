@@ -282,12 +282,19 @@
       are. The query set is pre-registered rather than published: the queries
       and their expected answers are fixed and hashed before any model is
       called, and that hash is written to an append-only record before the
-      first query. Queries are disclosed once the edition ships and rotated
-      for the next. Publishing them in advance would make contamination of
-      later editions certain rather than possible. Test items are derived from
-      what the models return, so they are published with the edition rather
-      than before it. Each edition is free, carries a permanent identifier,
-      and states the measurement window it describes.
+      first query. The cases an edition draws on are not held back, and cannot
+      be: ground truth is established by resolving each citation against
+      CourtListener, and every lookup is written to a public verification
+      journal, because a verification that names nothing verifies nothing.
+      What is held back is the rest &mdash; the queries themselves, the negated
+      holdings, and the recorded answers &mdash; none of which is published
+      until the edition ships, after which they are rotated for the next.
+      Test items are derived from what the models return, so they are published
+      with the edition rather than before it. What this does and does not
+      protect is stated in
+      <a href="/weaknesses/#lookup-journal-discloses-items">Known Weaknesses</a>.
+      Each edition is free, carries a permanent identifier, and states the
+      measurement window it describes.
     </p>
   </section>
 

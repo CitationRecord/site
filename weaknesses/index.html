@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Known Weaknesses v0.2 — The Citation Record</title>
+<title>Known Weaknesses v0.5 — The Citation Record</title>
 <meta name="description" content="Defects found in the Citation Record's own instruments, each under its own name, with the records behind them.">
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" sizes="32x32">
@@ -148,7 +148,7 @@
   <div class="head">
     <h1>Known Weaknesses</h1>
     <p class="edition">The Citation Record · defects in this project&rsquo;s own instruments</p>
-    <p class="version"><b>v0.2</b> · 13 September 2026 · <span class="state">five entries, three fixed and two open</span></p>
+    <p class="version"><b>v0.5</b> · 18 September 2026 · <span class="state">nine entries, six fixed and three open</span></p>
   </div>
 
   <div class="governing">
@@ -278,8 +278,130 @@
     <p><b class="lead">What it does not affect.</b> Anything that reads the citations table directly rather than through the frame.</p>
   </div>
 
+  <div class="entry" id="authorship-undefined">
+    <h2><a href="#authorship-undefined">A question about a judge who does not exist</a></h2>
+    <p class="meta"><span class="slug">authorship-undefined</span> · found 18 September 2026 · <span class="fixed">fixed</span></p>
+
+    <p><b class="lead">The defect.</b> One of the three metadata question types asks who wrote the majority opinion in a named case. It was asked of any drawn cluster. A trial court sits as a single judge, so it produces no panel, no majority, and no majority opinion. For such a case the question names nothing, and the recorded ground truth answered it anyway with the one judge&rsquo;s name.</p>
+
+    <p><b class="lead">Evidence.</b> An exploratory pilot put nine queries to four systems. One asked who wrote the majority opinion in a bankruptcy decision reported at 410 B.R. 170. <strong>Three of the four systems answered that a single-judge court produces no majority opinion.</strong> That is the correct answer. Our ground truth recorded an author, so a scorer applying it would have marked those three wrong and marked the fourth &mdash; which supplied a name &mdash; right.</p>
+
+    <p>The same item carried a second disagreement no scorer could have settled without going to the docket.</p>
+
+    <table>
+      <tr><th>Field</th><th>Our ground truth</th><th>What the systems said</th></tr>
+      <tr><td>Court</td><td>District Court, W.D. Pa.</td><td>Bankruptcy Court, W.D. Pa.</td></tr>
+      <tr><td>Year</td><td class="num">2008</td><td class="num">2009</td></tr>
+      <tr><td>Judge</td><td>McVERRY</td><td>M. Bruce McCullough</td></tr>
+    </table>
+
+    <p><b class="lead">What it caused.</b> No published figure. It was caught because a pilot existed and because three systems disagreed with us in the same direction, which is the only signal that distinguishes a bad answer from a bad question. The registered query set for Edition One carried the same defect: the redraw rejected <code>1421350</code>, a decision reported at 372 F. Supp. 671, for the same reason.</p>
+
+    <p><b class="lead">The uncomfortable part.</b> This is the first entry here where the systems under test were right and the instrument was wrong, and where the instrument would have recorded its own error as their hallucination. Every other entry describes a number that could have been wrong. This one describes a question that had no correct answer, asked of four systems, three of which said so.</p>
+
+    <p>It is also the sharpest case for scoring against recorded ground truth rather than against a reading of the response. A scorer comparing a name to a name would have seen three failures. A scorer reading the responses would have seen three corrections.</p>
+
+    <p><b class="lead">What fixed it.</b> Two checks in series, because neither is complete alone. At draw time the authorship question is refused for the reporters that are single-judge by construction &mdash; F. Supp., F. Supp. 2d, F. Supp. 3d, F.R.D. and B.R. &mdash; and for case names carrying a per curiam or order shape. That removes 196,192 of 1,988,809 metadata candidates, 9.9%, from the authorship question only; the year and citation questions are unaffected and keep the whole pool. At resolve time the question is refused again against the court the API actually reports and the per curiam flag, which catches the trial-court decisions that reach a regional reporter and which no field in the pool distinguishes.</p>
+
+    <p><b class="lead">Residual.</b> The draw-time list is a list of reporters, not a parse of a court system, and the regional reporters carry trial-court decisions the reporter name cannot reveal. That is why the resolve-time check exists, and it is why an item refused there is left incomplete rather than answered: an incomplete item is visible in the artifact and blocks registration, while a wrong one is invisible and gets published.</p>
+  </div>
+
+  <div class="entry" id="clause-boundary">
+    <h2><a href="#clause-boundary">A negation that governed half a sentence</a></h2>
+    <p class="meta"><span class="slug">clause-boundary</span> · found 18 September 2026 · <span class="fixed">fixed</span></p>
+
+    <p><b class="lead">The defect.</b> The negated-holding category inverts a judge-written parenthetical by deleting its negator. A guard was meant to reject any candidate that did not sit in a single clause, on the ground that one negator cannot govern two. The guard counted full stops and semicolons. <strong>Those are sentence boundaries.</strong> A comma and a coordinating conjunction open a second clause inside one sentence, and that shape passed.</p>
+
+    <p><b class="lead">Evidence.</b> The pilot drew this parenthetical, which has one full stop and no semicolon:</p>
+
+    <p style="padding-left:1.2em;"><i>holding that the &ldquo;discovery rule&rdquo; does not apply to civil penalty enforcement actions, and the statute of limitations starts running when the fraud occurs</i></p>
+
+    <p>Deleting the negator inverted the first clause and left the second untouched, producing a query asserting that the discovery rule <i>does</i> apply <i>and</i> that the clock starts when the fraud occurs. Those cannot both hold: the discovery rule is the doctrine that the clock starts on discovery. Three of the four systems reported the contradiction rather than answering; the fourth silently repaired the query and answered the repaired version, which is the one response that leaves no trace of the defect.</p>
+
+    <p><b class="lead">What it caused.</b> No published figure. The three acceptable responses recorded for this category are that no such case exists, that a contrary case exists, or that a genuine superseding case exists. <strong>None of them covers &ldquo;the question contradicts itself&rdquo;</strong>, so the three systems that identified the defect precisely would have scored as failing to produce an acceptable response.</p>
+
+    <p><b class="lead">The uncomfortable part.</b> The rule set for this category was already documented as empirical and incomplete, derived by reading draws rather than by reasoning about negation in advance, with a note predicting that further failure shapes remained in the pool. This is that prediction coming true for the sixth time. The note was right and it did not help, because a rule set can only be extended by the next failure finding someone.</p>
+
+    <p><b class="lead">What fixed it.</b> A sixth rejection rule, on a comma followed by a coordinating conjunction, applied before the negator is counted. It removes 4,474 of 65,538 previously-accepted candidates, 6.8%, leaving 61,064. It is deliberately over-inclusive: it also rejects a serial list, where the single negator does govern the whole text and the inversion would have been clean. That is the trade this component always makes, for the reason it always gives &mdash; the pool is large enough that discarding is free, and a doubtful negation is not. The parenthetical above is pinned as a test, verbatim from the corpus, so a later loosening fails against the text that broke it rather than against a tidied version of it.</p>
+
+    <p><b class="lead">Residual.</b> The rule set is still empirical and still not proven exhaustive, and this entry is evidence for that rather than against it. A seventh shape should be expected. The 2026.Q4 draw was re-run under the new rule and none of its five negated items was affected, so this defect reached the pilot and not the edition.</p>
+  </div>
+
+  <div class="entry" id="answer-in-the-wrong-form">
+    <h2><a href="#answer-in-the-wrong-form">An answer recorded in a different form from the one the question asked for</a></h2>
+    <p class="meta"><span class="slug">answer-in-the-wrong-form</span> · found 18 September 2026 · <span class="fixed">fixed</span></p>
+
+    <p><b class="lead">The defect.</b> The citation question asks for <i>a Bluebook-formatted citation</i> for a named case. The recorded answer was the bare reporter citation the query had been built from &mdash; <code>513 B.R. 896</code>. A Bluebook citation names the case, the reporter, the deciding court and the year. The two are not the same thing, and the question asked for the one the answer did not hold.</p>
+
+    <p><b class="lead">Evidence.</b> The 2026.Q4 item asks for a Bluebook citation for <i>Okke v. Okke (In re Okke)</i>. The complete citation is <code>Okke v. Okke (In re Okke), 513 B.R. 896 (Bankr. W.D. Mich. 2014)</code>. The recorded answer held the middle third.</p>
+
+    <p>The pilot had already shown what this costs. Asked for a Bluebook citation for a Michigan case, three systems returned three strings, two of them carrying a parallel citation to the official reporter alongside the regional one. Compared to a single stored string, a correct response and an incorrect one are indistinguishable.</p>
+
+    <table>
+      <tr><th>Source</th><th>Returned</th></tr>
+      <tr><td>Ground truth as recorded</td><td><code>403 N.W.2d 591</code></td></tr>
+      <tr><td>One system</td><td><code>People v. Lodge, 403 N.W.2d 591 (Mich. Ct. App. 1987)</code></td></tr>
+      <tr><td>Another</td><td><code>People v. Lodge, 157 Mich. App. 190, 403 N.W.2d 607</code></td></tr>
+      <tr><td>A third</td><td><code>People v. Lodge, 164 Mich. App. 558, 417 N.W.2d 582</code></td></tr>
+    </table>
+
+    <p><b class="lead">What it caused.</b> No published figure. It was found by reading the question and the answer against each other before registration, which is the only check that finds this class: the answer field was populated, well formed, and drawn from the corpus, so nothing that verified ground truth existed or resolved would have flagged it.</p>
+
+    <p><b class="lead">The uncomfortable part.</b> This is the third entry in a row where the instrument asked one thing and recorded another, and the third where a correct response would have scored as wrong. The first two were caught by systems disagreeing with us. <strong>This one was caught by asking, of an item that had already passed every automated check, what question it was actually putting.</strong> That is not a check that can be automated, because the defect is agreement between a question and an answer, and both were individually valid.</p>
+
+    <p><b class="lead">What fixed it.</b> The answer is now the complete Bluebook citation, assembled from resolved fields. The court is written in its Bluebook abbreviation rather than CourtListener&rsquo;s court string, and the abbreviation is <em>fetched</em> rather than derived: Table T1 is long, and a mapping maintained in the tooling would be a second source of truth that drifts from the first. CourtListener&rsquo;s <code>courts</code> endpoint carries <code>citation_string</code>, which is that abbreviation, and the lookup is recorded in the item&rsquo;s provenance. The assembly refuses on any missing component rather than building a citation around a blank, because a partial citation looks like an answer.</p>
+
+    <p>The components are recorded beside the whole, so a scorer can check the case name, the reporter citation, the court and the year separately. A response carrying a parallel citation is not thereby wrong, and a ground truth holding one string cannot say which part of it differs.</p>
+
+    <p><b class="lead">Residual.</b> Form normalisation is now the open question rather than form disagreement. A year recorded as <code>1981</code> and answered as <code>&ldquo;1981&rdquo;</code>, or an author recorded as <code>Nieto</code> and answered as <code>Judge Nieto</code>, are matching problems for the scoring interface rather than defects in the question. The other three metadata question types were checked against their answers at the same time and agree about what is being asked.</p>
+  </div>
+
+  <div class="entry" id="lookup-journal-discloses-items">
+    <h2><a href="#lookup-journal-discloses-items">The public lookup journal discloses the items it verifies</a></h2>
+    <p class="meta"><span class="slug">lookup-journal-discloses-items</span> · found 18 September 2026 · <span class="open">open</span></p>
+
+    <p><b class="lead">The defect.</b> Ground truth for a drawn item is established by resolving its citation through <code>resolve/</code>, and every lookup is written to <code>lookups.jsonl</code> with the citation it looked up. That journal lives in <a href="https://github.com/CitationRecord/resolutions">CitationRecord/resolutions</a>, which is public by design. <strong>Recording the ground truth of an item therefore publishes the citation the item is about, before the edition ships.</strong></p>
+
+    <p><b class="lead">Evidence.</b> Forty lines are already public, logged between 7 and 13 September 2026, carrying nineteen distinct citations. Eight of the nine items in the registered 2026.Q4 query set are among them.</p>
+
+    <table>
+      <tr><th>Registered item</th><th>Subject citation</th><th>State</th></tr>
+      <tr><td><code>meta-author-2633759</code></td><td>176 P.3d 851</td><td>already public</td></tr>
+      <tr><td><code>meta-year-7579586</code></td><td>394 So. 2d 540</td><td>already public</td></tr>
+      <tr><td><code>meta-citation-8524823</code></td><td>513 B.R. 896</td><td>already public</td></tr>
+      <tr><td><code>neg-8018431</code></td><td>860 S.W.2d 414</td><td>already public</td></tr>
+      <tr><td><code>neg-6546281</code></td><td>568 N.W.2d 324</td><td>already public</td></tr>
+      <tr><td><code>neg-8816042</code></td><td>509 U.S. 43</td><td>already public</td></tr>
+      <tr><td><code>neg-7718500</code></td><td>409 U.S. 352</td><td>already public</td></tr>
+      <tr><td><code>neg-7023026</code></td><td>468 U.S. 420</td><td>already public</td></tr>
+      <tr><td><code>meta-author-5347747</code></td><td>39 N.Y.S. 959</td><td>withheld</td></tr>
+    </table>
+
+    <p>The pending lines covering the ninth item are being held and will ship with the edition. Holding them protects one item of nine. The other eight were published days before the set they belong to was registered, and git history survives deletion, so they cannot be unpublished.</p>
+
+    <p><b class="lead">The design conflict underneath.</b> This is not an oversight in one component. Two commitments this project has published are both correct, and for any item whose ground truth needs a lookup they cannot both hold.</p>
+
+    <table>
+      <tr><th>Commitment</th><th>Says</th></tr>
+      <tr><td><code>resolve/</code></td><td>The lookup journal is public, because a verification nobody can read verifies nothing.</td></tr>
+      <tr><td>The homepage</td><td>The query set is pre-registered rather than published, and disclosed once the edition ships.</td></tr>
+    </table>
+
+    <p>Verifying an item publicly and holding the item back are the same act performed on the same citation, and the journal cannot do one without undoing the other.</p>
+
+    <p><b class="lead">Why the guard did not catch it.</b> <code>register/</code> refuses to register a query set that sits inside a public repository, by name and by the generic git check, and that guard worked exactly as written every time it ran. It checks <em>where the artifact goes</em>. It has nothing to say about what a different file, in a different repository, reveals about the artifact's contents. The set was never in a public repository. Its subjects were.</p>
+
+    <p><b class="lead">What it caused.</b> Nothing published, and nothing yet measured. What it removes is the held-out property of eight ninths of Edition One. A system whose training or retrieval has reached the public journal has seen which cases are being asked about, though not what is being asked about them.</p>
+
+    <p><b class="lead">This one does not tilt the way the others do.</b> Every previous entry biases toward recording our own failure as somebody else's. This one biases the other way and is worse for it. Contamination makes a system look <em>better</em>, not worse: an item a system has already seen is one it answers correctly. The result is not a wrong number that could be corrected. It is a number that measures retrieval of this benchmark rather than retrieval of the law, and no scoring decision downstream can tell the two apart.</p>
+
+    <p><b class="lead">What would settle it, none of which is chosen here.</b> The journal could record the resolution without the citation, deferring the query field for edition items until the edition ships, which keeps the record and withholds the subject. Edition lookups could go to a separate journal, private until the edition ships and published with it, at the cost of two journals and the rule about one home. Or the homepage sentence could narrow to what the design can actually deliver, which is that the <em>questions</em> and their answers are held out rather than the cases they are drawn from.</p>
+
+    <p><b class="lead">Residual, and it is the whole entry.</b> The first option is the only one that restores the property for future editions, and none of the three recovers the eight items already disclosed. Those are spent for the held-out purpose whatever is decided next, in the same way the pilot's nine are spent: not by being answered, but by being seen.</p>
+  </div>
+
   <div class="closing">
-    <h2>What these five have in common</h2>
+    <h2>What these nine have in common</h2>
 
     <p>The two open entries were found by trying to reproduce a number this project had been repeating for days, and failing.</p>
 
@@ -287,11 +409,19 @@
 
     <p>The defect was never that nothing was written down. It was that what was written down carried no schema, no provenance stamp, no population and no caveats, so a number could leave it without the thing it was measured over. That is how a sample rate over four volumes became a claim about corpus coverage.</p>
 
-    <p><strong>Four of the five entries here bias the same way, toward recording our own failure as somebody else's.</strong> A sparse volume read as full coverage turns a real case into a fabrication. An inflated reporter count pushes an uncovered citation toward the same verdict. A sampling artifact read as a coverage gap overstates how little ground truth exists. An ambiguous citation would have marked a system wrong for answering a question that had no single right answer.</p>
+    <p><strong>Seven of the nine entries here bias the same way, toward recording our own failure as somebody else's.</strong> A sparse volume read as full coverage turns a real case into a fabrication. An inflated reporter count pushes an uncovered citation toward the same verdict. A sampling artifact read as a coverage gap overstates how little ground truth exists. An ambiguous citation would have marked a system wrong for answering a question that had no single right answer. A question about the majority opinion of a single-judge decision would have marked three systems wrong for telling us it had no answer. A negation that governed half a sentence would have marked three systems wrong for telling us the question contradicted itself. An answer recorded in a different form from the one the question asked for would have marked a correct citation wrong for being complete.</p>
 
-    <p>Only the drifting volume ranges point both ways. The rest run in one direction, and it is the direction this benchmark can least afford, because every error in it makes the systems under test look worse than they are and makes this project look more necessary than it is.</p>
+    <p>The drifting volume ranges point both ways. The rest of those seven run in one direction, and it is the direction this benchmark can least afford, because every error in it makes the systems under test look worse than they are and makes this project look more necessary than it is.</p>
 
-    <p>When this register held four entries it said the pattern was worth watching for in the fifth. The fifth arrived three days later and fit it. That makes the tilt an expectation rather than an observation, and the next entry should be read against it.</p>
+    <p><strong>The ninth entry does not belong to that pattern at all, and it is the most serious one here.</strong> The other eight are defects in measurement or in questions: they produce a wrong number, and a wrong number can be corrected once it is found. The public lookup journal does not produce a wrong number. It removes the property that makes the number mean anything, for eight of the nine items in the first edition, and it does so by honouring one published commitment at the cost of another. Both commitments are right. They are not jointly satisfiable for any item whose ground truth needs a lookup, and nothing in the tooling was ever going to discover that, because each component was doing exactly what it said.</p>
+
+    <p>When this register held four entries it said the pattern was worth watching for in the fifth. The fifth arrived three days later and fit it. The sixth and seventh arrived five days after that and fit it too, and they arrived together, from the first exercise that ever put a question to a model. <strong>The tilt is now a property of the instrument rather than a run of luck</strong>, and the next entry should be read against it.</p>
+
+    <p>The last three change what the register is for. The first five were defects in measurement: numbers that could have been wrong, caught by recomputing them. These three were defects in the questions themselves, and no amount of recomputation would have found any of them, because each produced a question that looked perfectly well formed and could not be answered correctly. <strong>Two were found by four systems disagreeing with us, and in both cases the systems were right.</strong> That is an uncomfortable discovery procedure to depend on, since it only works where the instrument is wrong in a way a capable system notices.</p>
+
+    <p>The third was found differently, and that is the part worth keeping. Nothing disagreed with us about the citation question, because it had not yet been asked of anyone. It was found by reading a question and its recorded answer against each other and noticing they were about different things &mdash; on an item that had passed every automated check, because both halves were individually valid and only their relation was wrong. <strong>No check we had written would have caught it</strong>, and the only reason it was caught at all is that the two defects before it had made the question worth asking of everything else. A shape check on the answer would have caught it, and the assembly that replaced the bare citation roughly encodes one now, which is worth stating plainly rather than claiming the defect was unreachable.</p>
+
+    <p>This register held seven entries an hour before it held eight, and the instruction that produced the eighth came with a standard worth recording: a register that stops counting when the number gets uncomfortable is the thing it exists to prevent.</p>
   </div>
 
   <div class="foot">
