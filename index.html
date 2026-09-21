@@ -327,28 +327,43 @@
     </div>
 
     <div class="term">
-      <h3>The ground-truth provider integrates with systems under test, and the benchmark pays for access</h3>
+      <h3>The ground-truth provider integrates with products built on systems under test, and the benchmark pays for access</h3>
       <p>
         As of 21 September 2026, Free Law Project publishes an MCP server
         that connects CourtListener to AI assistants over an open standard.
-        It reaches three systems this benchmark tests: Claude, announced
-        12 May 2026; ChatGPT, whose plugin launched 17 September 2026 per
-        Free Law Project&rsquo;s blog; and Google Cloud&rsquo;s Gemini
-        Enterprise for Legal, announced 25 August 2026, which ships a
-        citation verification capability. The publisher has held a paid
-        Tier 1 CourtListener membership, $10 a month at published rates,
-        since 7 September 2026. This is disclosed rather than resolved:
-        the corpus is public-domain primary law, one server serves every
-        client on the same terms, and the alternatives &mdash;
-        Shepard&rsquo;s, KeyCite &mdash; are owned outright by systems
-        under test.
+        It reaches three <em>products</em> built on systems this benchmark
+        measures: the Claude app, announced 12 May 2026; ChatGPT
+        Enterprise, whose CourtListener plugin launched
+        <a href="https://web.archive.org/web/20260917204117/https://free.law/2026/09/17/grounded-legal-research-in-chatgpt/">17
+        September 2026</a>; and Google Cloud&rsquo;s Gemini Enterprise for
+        Legal, announced 25 August 2026, which ships a citation
+        verification capability.
       </p>
       <p>
-        The date is load-bearing. Which systems reach this corpus is a
+        <strong>It does not reach the configuration under test.</strong>
+        Edition One measures Claude, GPT-5 and Gemini as raw models through
+        their APIs, with retrieval disabled and the exact request setting
+        that disables it recorded for each: for all three, the absence of
+        any <code>tools</code> field, so no MCP server is reachable by the
+        model at all. That is checkable against the stored request rather
+        than taken on this page&rsquo;s word. The relationship is disclosed
+        because it exists, not because it touches a measurement.
+      </p>
+      <p>
+        The publisher has held a paid Tier 1 CourtListener membership, $10
+        a month at published rates, since 7 September 2026. This is
+        disclosed rather than resolved: the corpus is public-domain primary
+        law, one server serves every client on the same terms, and the
+        alternatives &mdash; Shepard&rsquo;s, KeyCite &mdash; are owned
+        outright by systems under test.
+      </p>
+      <p>
+        The date is load-bearing, and the link goes to an archived copy
+        rather than the live post. Which products reach this corpus is a
         fact about a third party&rsquo;s integrations, it changes without
-        notice, and a present-tense sentence would hide its own staleness
-        rather than date it. Read the list as what was true on the day
-        stated and not as a standing description.
+        notice, and a present-tense sentence citing a page that can be
+        edited would hide its own staleness twice over. Read the list as
+        what was true on the day stated and not as a standing description.
       </p>
     </div>
 
