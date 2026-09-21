@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Scoring interface, demonstration v0.1 — The Citation Record</title>
+<title>Scoring interface, demonstration v0.2 — The Citation Record</title>
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="icon" href="/favicon-32.png" sizes="32x32">
 <link rel="apple-touch-icon" href="/favicon-180.png">
@@ -150,6 +150,8 @@
     font-size:12.5px;color:var(--soft);
     margin:12px 0 0;padding-top:10px;border-top:1px solid var(--rule);
   }
+  .corpus-note{font-size:12px;color:var(--soft);margin:7px 0 0;}
+  .corpus-note code{font-family:var(--mono);font-size:11.5px;}
 
   /* settled findings */
   .settled{
@@ -295,6 +297,7 @@
         <button class="expand" id="down" data-dir="down">Later in the opinion</button>
       </div>
       <p class="context"><span id="ctx-read">Cited paragraph and one either side.</span> Passage located at 550 U.S. 561. <button class="relocate" id="relocate" hidden>Back to the cited passage</button></p>
+      <p class="corpus-note">Two words in the earlier paragraphs are optical-character-recognition errors in the source: <code>eomplaint</code> for &ldquo;complaint&rdquo;, and <code>antitrust ease</code> for &ldquo;antitrust case&rdquo;. They stand as CourtListener holds them. Nothing is marked inside the passage, because a correction or an inserted <i>sic</i> would alter text this page presents as verbatim.</p>
     </div>
   </div>
 
